@@ -41,12 +41,7 @@ export function Hero() {
           { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 },
           "-=0.45",
         )
-        .fromTo(
-          "[data-hero-mark]",
-          { opacity: 0, scale: 0.9 },
-          { opacity: 1, scale: 1, duration: 1.1, ease: "expo.out" },
-          "-=0.9",
-        );
+        ;
     },
     { scope },
   );
@@ -60,14 +55,6 @@ export function Hero() {
       className="relative overflow-hidden border-b border-[var(--color-line-dark)] bg-[var(--color-ink)] text-[var(--color-paper)]"
     >
       <div className="grid-motif absolute inset-0 opacity-60" aria-hidden="true" />
-      <div
-        data-hero-mark
-        className="pointer-events-none absolute -right-24 top-1/2 hidden h-[36rem] w-[36rem] -translate-y-1/2 rounded-full border border-[var(--color-signal)]/30 md:block"
-        aria-hidden="true"
-      >
-        <div className="absolute inset-16 rounded-full border border-[var(--color-signal)]/20" />
-        <div className="absolute inset-32 rounded-full bg-[var(--color-signal)]/10" />
-      </div>
 
       <Container className="relative grid gap-10 py-28 md:grid-cols-[1.3fr_0.7fr] md:py-40">
         <div className="flex flex-col gap-8">
@@ -75,7 +62,7 @@ export function Hero() {
             data-hero-kicker
             className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-signal)]"
           >
-            Midrand · Gauteng
+            0.0 · Midrand, Gauteng
           </p>
 
           <h1 className="max-w-3xl text-balance text-[clamp(2.5rem,4.8vw+1rem,5.5rem)] font-semibold leading-[1.03] tracking-tight">
