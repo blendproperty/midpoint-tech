@@ -1,25 +1,37 @@
-import { describe, it, expect } from "vitest";
-import { sanitizeEventPayload } from "@/lib/analytics";
+import { describe, it, expect, beforeEach } from "vitest";
+import { track } from "@/lib/analytics";
 
-describe("sanitizeEventPayload", () => {
-  it("strips keys that look like personal data", () => {
-    const clean = sanitizeEventPayload({
-      email: "user@example.com",
-      phone: "+27821234567",
-      fullName: "Someone",
-      message: "hello",
-      spaceType: "office",
-    });
-    expect(clean).toEqual({ spaceType: "office" });
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+  }
+}
+
+beforeEach(() => {
+  window.localStorage.clear();
+  window.dataLayer = [];
+});
+
+describe("track", () => {
+  it("does nothing without consent", () => {
+    track("view_space", { slug: "block-a-suite-201" });
+    expect(window.dataLayer).toHaveLength(0);
   });
 
-  it("strips nested objects defensively", () => {
-    const clean = sanitizeEventPayload({ nested: { a: 1 }, count: 3 });
-    expect(clean).toEqual({ count: 3 });
+  it("pushes sanitised events once consent is granted", () => {
+    window.localStorage.setItem("mt-analytics-consent", "granted");
+    track("view_space", { slug: "block-a-suite-201" });
+    expect(window.dataLayer).toHaveLength(1);
+    expect(window.dataLayer?.[0]).toMatchObject({ event: "view_space", slug: "block-a-suite-201" });
   });
 
-  it("keeps safe categorical/numeric values", () => {
-    const clean = sanitizeEventPayload({ location: "hero", index: 2, isBroker: true });
-    expect(clean).toEqual({ location: "hero", index: 2, isBroker: true });
+  it("strips personal fields even if a caller passes them", () => {
+    window.localStorage.setItem("mt-analytics-consent", "granted");
+    track("submit_tour_form", { fullName: "Jane Doe", email: "jane@acme.com", company: "Acme", spaceRequired: "150 m2" });
+    const event = window.dataLayer?.[0] as Record<string, unknown>;
+    expect(event.fullName).toBeUndefined();
+    expect(event.email).toBeUndefined();
+    expect(event.company).toBeUndefined();
+    expect(event.spaceRequired).toBe("150 m2");
   });
 });
