@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-label="Arrival & Reception placeholder">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#dcd6c4" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="#f8f6f0"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+  <rect x="0" y="0" width="1600" height="1000" fill="none" stroke="#dcd6c4" stroke-width="2"/>
+  <circle cx="1460" cy="140" r="10" fill="#cf4520"/>
+  <text x="80" y="490.0" font-family="Arial, sans-serif" font-size="42" fill="#14140f" font-weight="600">Arrival & Reception</text>
+  <text x="80" y="534.0" font-family="Arial, sans-serif" font-size="22" fill="#5a5748">Placeholder — real photography pending</text>
+</svg>
