@@ -6,7 +6,7 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://www.google.com https://maps.gstatic.com https://maps.googleapis.com https://picsum.photos https://fastly.picsum.photos",
+  "img-src 'self' data: blob: https://www.google.com https://maps.gstatic.com https://maps.googleapis.com",
   "font-src 'self' data:",
   "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
   "frame-src 'self' https://www.google.com",
@@ -34,16 +34,7 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-      },
-      {
-        protocol: "https",
-        hostname: "fastly.picsum.photos",
-      },
-    ],
+    remotePatterns: [],
   },
   async headers() {
     return [

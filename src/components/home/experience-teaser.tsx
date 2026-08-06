@@ -1,16 +1,16 @@
 "use client";
 import { useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
+import { MediaFrame } from "@/components/ui/media-frame";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsap";
 
 const frames = [
-  { seed: "midpointtech-arrival", alt: "Placeholder image of the arrival and reception experience at Midpoint Tech" },
-  { seed: "midpointtech-workspace", alt: "Placeholder image of a workspace environment at Midpoint Tech" },
-  { seed: "midpointtech-shared", alt: "Placeholder image of a shared collaboration space at Midpoint Tech" },
+  { src: "/images/campus/placeholder-arrival.svg", alt: "Placeholder image of the arrival and reception experience at Midpoint Tech" },
+  { src: "/images/campus/placeholder-workspace.svg", alt: "Placeholder image of a workspace environment at Midpoint Tech" },
+  { src: "/images/campus/placeholder-shared.svg", alt: "Placeholder image of a shared collaboration space at Midpoint Tech" },
 ];
 
 export function ExperienceTeaser() {
@@ -37,7 +37,7 @@ export function ExperienceTeaser() {
       gsap.utils.toArray<HTMLElement>("[data-gallery-frame]").forEach((frame) => {
         gsap.fromTo(
           frame,
-          { scale: 0.82, opacity: 0.3 },
+          { scale: 0.85, opacity: 0.35 },
           {
             scale: 1,
             opacity: 1,
@@ -51,7 +51,7 @@ export function ExperienceTeaser() {
           },
         );
         gsap.to(frame, {
-          opacity: 0.25,
+          opacity: 0.3,
           ease: "none",
           scrollTrigger: {
             trigger: frame,
@@ -81,17 +81,14 @@ export function ExperienceTeaser() {
 
         <div data-gallery-track className="flex flex-col gap-24 py-24">
           {frames.map((frame) => (
-            <div
-              key={frame.seed}
-              data-gallery-frame
-              className="relative aspect-[4/3] w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-line)]"
-            >
-              <Image
-                src={`https://picsum.photos/seed/${frame.seed}/1200/900`}
+            <div key={frame.src} data-gallery-frame>
+              <MediaFrame
+                src={frame.src}
                 alt={frame.alt}
-                fill
+                width={800}
+                height={600}
+                className="aspect-[4/3]"
                 sizes="(min-width:768px) 45vw, 100vw"
-                className="object-cover grayscale contrast-110"
               />
             </div>
           ))}

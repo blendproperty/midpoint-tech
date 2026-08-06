@@ -1,6 +1,5 @@
 "use client";
 import { useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -43,10 +42,10 @@ export function Hero() {
           "-=0.45",
         )
         .fromTo(
-          "[data-hero-bg]",
-          { scale: 1.15, opacity: 0 },
-          { scale: 1, opacity: 0.45, duration: 1.6, ease: "expo.out" },
-          0,
+          "[data-hero-mark]",
+          { opacity: 0, scale: 0.9 },
+          { opacity: 1, scale: 1, duration: 1.1, ease: "expo.out" },
+          "-=0.9",
         );
     },
     { scope },
@@ -58,68 +57,81 @@ export function Hero() {
   return (
     <section
       ref={scope}
-      className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-[var(--color-ink)] text-[var(--color-paper)]"
+      className="relative overflow-hidden border-b border-[var(--color-line-dark)] bg-[var(--color-ink)] text-[var(--color-paper)]"
     >
-      <div className="absolute inset-0" data-hero-bg>
-        <Image
-          src="https://picsum.photos/seed/midpointtech-hero/1920/1080"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover grayscale contrast-125"
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--color-ink)_78%)]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)] via-[var(--color-ink)]/60 to-[var(--color-ink)]/20" />
+      <div className="grid-motif absolute inset-0 opacity-60" aria-hidden="true" />
+      <div
+        data-hero-mark
+        className="pointer-events-none absolute -right-24 top-1/2 hidden h-[36rem] w-[36rem] -translate-y-1/2 rounded-full border border-[var(--color-signal)]/30 md:block"
+        aria-hidden="true"
+      >
+        <div className="absolute inset-16 rounded-full border border-[var(--color-signal)]/20" />
+        <div className="absolute inset-32 rounded-full bg-[var(--color-signal)]/10" />
       </div>
 
-      <Container className="relative flex flex-col items-center gap-8 py-32 text-center">
-        <p
-          data-hero-kicker
-          className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-signal)]"
-        >
-          Midrand · Gauteng
-        </p>
+      <Container className="relative grid gap-10 py-28 md:grid-cols-[1.3fr_0.7fr] md:py-40">
+        <div className="flex flex-col gap-8">
+          <p
+            data-hero-kicker
+            className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-signal)]"
+          >
+            Midrand · Gauteng
+          </p>
 
-        <h1 className="max-w-5xl text-balance font-[var(--font-display)] text-[clamp(2.75rem,5.2vw+1rem,6.5rem)] font-medium leading-[1.02] tracking-tight">
-          {words.map((word, i) => (
-            <span key={i}>
-              <span data-hero-word className="inline-block will-change-transform">
-                {word}
+          <h1 className="max-w-3xl text-balance text-[clamp(2.5rem,4.8vw+1rem,5.5rem)] font-semibold leading-[1.03] tracking-tight">
+            {words.map((word, i) => (
+              <span key={i}>
+                <span data-hero-word className="inline-block will-change-transform">
+                  {word}
+                </span>
+                {i < words.length - 1 ? " " : ""}
               </span>
-              {i < words.length - 1 ? " " : ""}
+            ))}
+          </h1>
+
+          <p data-hero-sub className="max-w-lg text-lg text-[var(--color-paper-dim)]">
+            A connected business environment for startups, scale-ups and established technology teams at 300
+            Janadel Avenue in Midrand.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <span data-hero-cta>
+              <Button href="/spaces" size="lg" showArrow>
+                Explore available spaces
+              </Button>
             </span>
-          ))}
-        </h1>
+            <span data-hero-cta>
+              <Button
+                href="/contact?intent=tour"
+                variant="secondary"
+                size="lg"
+                className="border-[var(--color-paper)] text-[var(--color-paper)] hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+                onClick={() => trackEvent("click_book_tour", { location: "hero" })}
+              >
+                Book a tour
+              </Button>
+            </span>
+          </div>
 
-        <p data-hero-sub className="max-w-xl text-lg text-[var(--color-paper-dim)]">
-          A connected business environment for startups, scale-ups and established technology teams at 300 Janadel
-          Avenue in Midrand.
-        </p>
-
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <span data-hero-cta>
-            <Button href="/spaces" size="lg" showArrow>
-              Explore available spaces
-            </Button>
-          </span>
-          <span data-hero-cta>
-            <Button
-              href="/contact?intent=tour"
-              variant="secondary"
-              size="lg"
-              className="border-[var(--color-paper)] text-[var(--color-paper)] hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
-              onClick={() => trackEvent("click_book_tour", { location: "hero" })}
-            >
-              Book a tour
-            </Button>
-          </span>
+          <p data-hero-sub className="flex items-center gap-2 text-sm text-[var(--color-paper-dim)]">
+            <MapPin className="size-4 shrink-0" aria-hidden="true" />
+            {siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.region}
+          </p>
         </div>
 
-        <p data-hero-sub className="flex items-center gap-2 text-sm text-[var(--color-paper-dim)]">
-          <MapPin className="size-4 shrink-0" aria-hidden="true" />
-          {siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.region}
-        </p>
+        <div data-hero-sub className="hidden flex-col justify-end gap-6 border-l border-[var(--color-line-dark)] pl-8 md:flex">
+          <dl className="flex flex-col gap-6">
+            <div>
+              <dt className="text-xs uppercase tracking-[0.2em] text-[var(--color-paper-dim)]">Address</dt>
+              <dd className="mt-1 text-base font-medium">{siteConfig.address.line1}</dd>
+              <dd className="text-sm text-[var(--color-paper-dim)]">{siteConfig.address.line2}</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase tracking-[0.2em] text-[var(--color-paper-dim)]">Corridor</dt>
+              <dd className="mt-1 text-base font-medium">Johannesburg &ndash; Pretoria</dd>
+            </div>
+          </dl>
+        </div>
       </Container>
     </section>
   );

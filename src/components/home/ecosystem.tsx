@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/reveal";
-import { Users, Handshake, Network } from "lucide-react";
+import { Building2, Users, Handshake, Network } from "lucide-react";
 
 /**
  * Bento grid: 6-column track, grid-flow-dense, zero empty cells.
@@ -21,25 +20,19 @@ export function Ecosystem() {
         </Heading>
 
         <div className="mt-14 grid auto-rows-[minmax(9rem,auto)] grid-cols-6 grid-flow-dense gap-4">
-          <Reveal className="group relative col-span-6 row-span-2 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-line-dark)] md:col-span-4">
-            <div className="relative flex h-full flex-col justify-end p-8">
-              <Image
-                src="https://picsum.photos/seed/midpointtech-teams/1600/1400"
-                alt=""
-                fill
-                sizes="(min-width:768px) 60vw, 100vw"
-                className="object-cover opacity-40 grayscale mix-blend-luminosity transition-transform duration-700 ease-out group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)] via-[var(--color-ink)]/40 to-transparent" />
-              <div className="relative">
-                <h3 className="font-[var(--font-display)] text-2xl font-medium md:text-3xl">
-                  Set among other technology businesses
-                </h3>
-                <p className="mt-3 max-w-md text-[var(--color-paper-dim)]">
-                  Midpoint Tech is designed around companies working in software, fintech, engineering and digital
-                  services — an environment shaped for that kind of work.
-                </p>
-              </div>
+          <Reveal className="group relative col-span-6 row-span-2 flex flex-col justify-between overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-line-dark)] bg-white/[0.03] p-8 md:col-span-4">
+            <Building2
+              className="size-10 text-[var(--color-signal)] transition-transform duration-500 ease-out group-hover:scale-110"
+              aria-hidden="true"
+            />
+            <div>
+              <h3 className="font-[var(--font-display)] text-2xl font-semibold md:text-3xl">
+                Set among other technology businesses
+              </h3>
+              <p className="mt-3 max-w-md text-[var(--color-paper-dim)]">
+                Midpoint Tech is designed around companies working in software, fintech, engineering and digital
+                services — an environment shaped for that kind of work.
+              </p>
             </div>
           </Reveal>
 

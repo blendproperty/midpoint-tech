@@ -10,8 +10,8 @@
   --color-paper-dim: #efebe0;
   --color-line: #dcd6c4;
   --color-line-dark: #3c3c30;
-  --color-signal: #ff4d1c;
-  --color-signal-strong: #d63a10;
+  --color-signal: #d94a1f;
+  --color-signal-strong: #ab3a17;
   --color-signal-on: #fff7f0;
   --color-success: #2f6f4e;
   --color-error: #ff5c5c;
@@ -42,7 +42,7 @@
   --color-signal-strong: var(--color-signal-strong);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
-  --font-display: var(--font-outfit);
+  --font-display: var(--font-geist);
   --font-body: var(--font-geist);
 }
 
@@ -72,7 +72,8 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.035em;
 }
 
 :focus-visible {
