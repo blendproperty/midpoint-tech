@@ -83,8 +83,10 @@ export function Hero() {
 
         <h1 className="max-w-5xl text-balance font-[var(--font-display)] text-[clamp(2.75rem,5.2vw+1rem,6.5rem)] font-medium leading-[1.02] tracking-tight">
           {words.map((word, i) => (
-            <span key={i} data-hero-word className="inline-block will-change-transform">
-              {word}
+            <span key={i}>
+              <span data-hero-word className="inline-block will-change-transform">
+                {word}
+              </span>
               {i < words.length - 1 ? " " : ""}
             </span>
           ))}
