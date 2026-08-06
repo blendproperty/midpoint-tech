@@ -1,49 +1,50 @@
-# Outstanding content and confirmations required before public launch
+# Content required before launch
 
-Everything in this list is currently represented by sample/placeholder data in the
-codebase, flagged with `sample: true` in content schemas and/or a visible "Sample
-data" badge in the UI.
+Everything below is currently **sample/placeholder data**, clearly marked `isSample: true` in code (`src/content/spaces.ts`, `src/content/news.ts`, `src/content/site.ts`). Nothing here should be treated as a verified property fact.
 
-## Property & leasing data (`src/lib/content/spaces.ts`)
-- [ ] Real unit names, building references and floor references.
-- [ ] Confirmed gross lettable area (GLA) per unit.
-- [ ] Confirmed rental rates, or explicit sign-off to keep "on request".
-- [ ] Confirmed availability status and occupation/available-from dates.
-- [ ] Confirmed parking bay allocation per unit.
-- [ ] Real photography for every space (see `docs/asset-register.md`).
-- [ ] Real floor plans (image or PDF) per unit.
-- [ ] Brochure PDFs per unit, if brokers require downloadable collateral.
-- [ ] Total number of buildings and total rentable area for the estate.
+## Property / leasing data (`src/content/spaces.ts`)
 
-## Building & infrastructure specification
-- [ ] Generator/backup power capacity.
-- [ ] Water backup capacity and redundancy model.
-- [ ] Fibre providers and available internet speeds.
-- [ ] Security and access-control systems in place.
-- [ ] Building grade and any sustainability certifications.
+| Field | Status | Notes |
+|---|---|---|
+| Unit names, building references | Sample | 4 illustrative units seeded |
+| GLA / unit sizes | Sample | Replace with surveyed figures |
+| Rental rates | Not set | All units show "on request" — populate `rentalPerSqm` and set `rentalDisplay: "approved"` once pricing is authorised for public display |
+| Availability dates | Sample | Confirm real occupation dates |
+| Parking bays per unit | Sample | Confirm parking ratio/allocation |
+| Specification tables | Sample | Confirm ceiling heights, fit-out condition, fibre readiness etc. |
+| Photography | Placeholder SVGs | Replace with licensed property photography — see `docs/asset-register.md` |
+| Floor plans | Placeholder SVG | Replace with real PDF/image floor plans |
+| Brochures | Not set (`brochureUrl: null`) | Add PDF brochure links once available |
 
-## Location
-- [ ] Verified GPS coordinates for 300 Janadel Avenue (currently marked
-      `geo.verified: false` in `src/lib/content/site.ts`).
-- [ ] Verified road-access and any drive-time claims specific to this address.
-- [ ] Confirmed public transport (Gautrain, bus, taxi) practicality for this address.
+## Site-wide facts (`src/content/site.ts`)
 
-## Contact & leasing
-- [ ] Dedicated Midpoint Tech phone number and email address.
-- [ ] Confirmed CRM or inbox that leasing enquiries should route to.
+- `contact.phoneDisplay` / `phoneHref` — sample number, replace with the real leasing line
+- `contact.leasingEmail` / `generalEmail` — confirm these are the correct live addresses
+- `address.lat` / `address.lng` — sample coordinates for Halfway House; confirm the exact pin
+- `social.linkedin` / `social.instagram` — not set; add once official accounts exist
 
-## Community & experience
-- [ ] Any confirmed amenities specific to Midpoint Tech.
-- [ ] Tenant names, logos and testimonials, with written permission to publish.
-- [ ] Any accelerator, incubator, funding-access, investor or university partnership
-      programme — only publish once formally agreed and operational.
-- [ ] A confirmed events/talks programme, if one exists.
+## Building / campus facts
 
-## News & content
-- [ ] Real announcements and insight articles to replace the two sample articles.
+Not currently claimed anywhere on the site (per the brief's explicit "do not invent" list), and must be supplied before adding:
+
+- Number of buildings, total rentable area
+- Generator capacity, water-backup capacity
+- Fibre provider(s) and available internet speeds
+- Security and access-control system specifications
+- Building grade / sustainability certifications, solar capacity
+- Precise drive times to Johannesburg CBD / Pretoria CBD
+- Confirmed public-transport (e.g. Gautrain feeder bus) information
+
+## Community / tenant ecosystem (`/community`, homepage social proof)
+
+- Tenant logos, names and testimonials — **none exist in this codebase**; the homepage "Tenant ecosystem" section and `/community` page intentionally render an empty state until authorised assets are supplied
+- Event programme, talks/workshops schedule
+- Any formal partnerships (university, accelerator, investor network) — do not add without written confirmation
+
+## News (`src/content/news.ts`)
+
+- Both seeded articles are placeholder copy and must be replaced with real, fact-checked announcements before launch
 
 ## Legal
-- [ ] Legal review and sign-off of `/privacy`, `/terms` and `/paia`.
 
-## Brand assets
-- [ ] Final Midpoint Tech logo (SVG) to replace the placeholder.
+- `/privacy`, `/terms`, `/paia` are drafted placeholders and require review/finalisation by a qualified legal advisor (South African POPIA compliance in particular) — see `docs/launch-checklist.md`

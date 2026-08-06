@@ -1,29 +1,34 @@
 # Accessibility
 
-Target: WCAG 2.2 AA.
+Target: **WCAG 2.2 AA**.
 
 ## What's implemented
-- Skip-to-content link, visible on keyboard focus.
-- One `<h1>` per page, logical heading hierarchy.
-- Semantic landmarks throughout.
-- Visible focus states everywhere via global `:focus-visible`.
-- Keyboard-accessible navigation, mobile drawer, gallery (arrow keys), dialogs.
-- Form fields use explicit labels, `aria-describedby`, `aria-invalid`, `role="alert"`.
-- Colour never the only status signal.
-- `prefers-reduced-motion` honoured globally and per-component.
-- Minimum 44px interactive target height.
-- Required, non-empty alt text on every image, including placeholders.
 
-## Manual verification checklist (complete before launch)
-- [ ] Full keyboard-only pass on every page.
-- [ ] Screen reader pass (VoiceOver/NVDA) on mobile menu, filter drawer, gallery.
-- [ ] 200% zoom check for horizontal scroll/clipping.
-- [ ] Automated axe/Lighthouse accessibility audit against the production build.
-- [ ] Contrast check of `--color-signal` on `--color-paper` for any new body-text use.
-- [ ] Re-test with `prefers-reduced-motion: reduce` enabled at the OS level.
+- Skip-to-content link (`.skip-link` in `globals.css`, `#main` landmark in `layout.tsx`)
+- Semantic landmarks: `<header>`, `<nav aria-label="Primary">`, `<main>`, `<footer>`
+- One `<h1>` per page, consistent heading hierarchy within sections
+- Visible focus states everywhere via `:focus-visible` (2px brass outline, never `outline: none` without a replacement)
+- Keyboard-accessible mobile navigation (`SiteNav`) with `aria-expanded`/`aria-controls`
+- Keyboard-accessible gallery lightbox (`Gallery.tsx`) — arrow keys navigate, Escape closes, all buttons have `aria-label`s
+- Accessible mobile filter drawer (`SpacesExplorer.tsx`) with `role="dialog"` and `aria-modal`
+- Form labels tied to inputs via `htmlFor`/`id`, required fields marked, errors announced with `role="alert"`
+- Status badges pair colour with a text label — never colour alone
+- `prefers-reduced-motion` respected globally (see `globals.css` media query) and individually in `Hero`, `MeridianLine`, `Metric` via `useReducedMotion()`
+- Descriptive `alt` text is enforced at the schema level — `mediaSchema` requires `alt` of at least 3 characters for every image (`src/content/schema.ts`)
+- Breadcrumbs (`Breadcrumbs.tsx`) use `aria-current="page"` for the current page
 
-## Known limitation in this build
-Automated e2e/accessibility test execution (Playwright) could not be run inside the
-sandboxed build environment used for this project (no outbound access to download
-browser binaries). The Playwright suite is written and ready to run with
-`npx playwright install && npm run e2e` in a normal environment or CI.
+## Manual checklist (run before launch)
+
+- [ ] Tab through every page using only the keyboard; confirm focus order is logical and nothing is unreachable
+- [ ] Test all forms with a screen reader (VoiceOver/NVDA); confirm error and success states are announced
+- [ ] Zoom to 200% in the browser and confirm no horizontal scroll or clipped content on any page
+- [ ] Test at 320px, 375px and 430px widths for touch-target size and readability
+- [ ] Run an automated audit (axe DevTools or Lighthouse accessibility) against a production build and fix any flagged issues
+- [ ] Confirm colour contrast for the final brass/teal accent values against both `stone` and `ink` backgrounds using a contrast checker, especially for small/secondary text
+- [ ] Verify captions/transcripts are added if a hero video with spoken audio is ever introduced
+- [ ] Confirm the reduced-motion experience (`prefers-reduced-motion: reduce` in OS settings) still fully communicates all content
+
+## Known gaps to close before launch
+
+- The consent banner referenced in `docs/analytics.md` does not yet exist as a UI component — it must be built as an accessible dialog when analytics are finalised.
+- No automated accessibility test suite is wired into CI yet — see `docs/launch-checklist.md`.
