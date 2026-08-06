@@ -1,24 +1,30 @@
 # Asset register
 
-Every image currently in `/public` is an elegant neutral placeholder SVG generated
-for this build — none are stock photography, and all are labelled in filename and
-alt text as placeholders.
+All imagery currently shipped is an original, elegant, clearly-labelled SVG placeholder generated for this build (`scripts/gen-placeholders.mjs` → `public/media/`). No third-party stock or copyrighted imagery has been used anywhere in this project.
 
-| Asset | Recommended dimensions | Orientation | File type | Page(s) | Alt text requirement | Supplied? | Licensing |
+| Asset | Recommended dimensions | Orientation | File type | Page(s) | Alt-text requirement | Supplied? | Licensing |
 |---|---|---|---|---|---|---|---|
-| Hero image/video | 2400×1350 (16:9) | Landscape | JPG/WEBP or MP4 + poster | Home | Describe the building/entrance | No — placeholder SVG | N/A |
-| Arrival/reception photo | 1600×1200 (4:3) | Landscape | JPG/WEBP | Experience, Home | Describe the space shown | No | N/A |
-| Workspace interior photo | 1600×1200 (4:3) | Landscape | JPG/WEBP | Experience, Home | Describe the space shown | No | N/A |
-| Shared/collaboration space photo | 1600×1200 (4:3) | Landscape | JPG/WEBP | Experience | Describe the space shown | No | N/A |
-| Landscape/grounds photo | 1600×1200 (4:3) | Landscape | JPG/WEBP | Experience | Describe the space shown | No | N/A |
-| Meeting/client space photo | 1600×1200 (4:3) | Landscape | JPG/WEBP | Experience | Describe the space shown | No | N/A |
-| Per-space gallery photos | 1600×1000 (16:10) | Landscape | JPG/WEBP | Spaces | Unique per unit | No | N/A |
-| Floor plans | Vector or 1600px+ raster | as drawn | SVG/PNG/PDF | Space detail | "Indicative floor plan for [unit]" | No | N/A |
-| Brochure PDFs | N/A | N/A | PDF | Space detail | N/A | No | N/A |
-| Tenant logos | 384×192 min, transparent | Landscape | SVG/PNG | Home, Community | Company name | No | Requires tenant permission |
-| News cover images | 1600×1000 (16:10) | Landscape | JPG/WEBP | News | Describe topic | No | N/A |
-| Final logo | Vector, multiple lockups | N/A | SVG | Global | "Midpoint Tech logo" | No | N/A |
+| Suite 201 gallery (×2) | 2400×1800 min | Landscape | JPG/WebP | `/spaces/block-a-suite-201` | Describe room, key features | No | N/A — pending client photography |
+| Full Floor 4 gallery | 2400×1800 min | Landscape | JPG/WebP | `/spaces/block-b-floor-4` | Describe space, condition | No | N/A |
+| Suite 108 gallery | 2400×1800 min | Landscape | JPG/WebP | `/spaces/block-a-suite-108` | Describe room | No | N/A |
+| Shared desks gallery | 2400×1800 min | Landscape | JPG/WebP | `/spaces/block-c-desks` | Describe desk area | No | N/A |
+| Floor plans (×4) | Vector or 2400px min | Landscape/portrait as supplied | PDF or PNG/SVG | Space detail pages | "Floor plan for [unit]" | No | N/A |
+| Brochures (×4) | N/A | N/A | PDF | Space detail pages | N/A (download link) | No | N/A |
+| Experience moments (×4) | 2000×1500 min | Landscape | JPG/WebP | `/experience`, homepage | Describe the moment shown | No | N/A |
+| About campus image | 1600×2000 min | Portrait | JPG/WebP | `/about` | Describe campus/building | No | N/A |
+| Location image | 1600×1200 min | Landscape | JPG/WebP | `/location` | N/A — replaced by map panel | No | N/A |
+| Community image | 1600×1200 min | Landscape | JPG/WebP | `/community` | Describe community context | No | N/A |
+| News covers (×2, ongoing) | 1600×1000 min | Landscape | JPG/WebP | `/news`, article pages | Describe article topic | No | N/A |
+| Tenant logos | SVG preferred, min 400px wide PNG fallback | N/A | SVG/PNG | Homepage social proof, `/community` | "[Tenant] logo" | No — none exist yet | Requires written tenant authorisation before use |
+| Hero background media | 2560×1440 min (or video, see below) | Landscape | JPG/WebP/MP4 | Homepage | N/A (decorative) or descriptive if meaningful | No | N/A |
 
-All placeholder SVGs embed "Placeholder — real photography pending" text so they
-cannot be mistaken for finished photography. Do not source stock photography as a
-substitute — replace with real Midpoint Tech photography only.
+## Video (optional, hero)
+
+If a hero video is supplied later: provide an H.264 MP4 under 8MB with a static poster JPG fallback, muted/autoplay-safe, with captions if any spoken content is included. Do not autoplay heavy video on constrained connections — see `docs/accessibility.md` and `docs/security.md` performance notes.
+
+## Process for adding real assets
+
+1. Drop optimised images into `public/media/<section>/`.
+2. Update the corresponding `gallery` / `cover` / `floorPlan` entries in `src/content/spaces.ts` or `src/content/news.ts`, writing real, descriptive `alt` text for each.
+3. Remove `isSample: true` once every field on that record is verified, not just the image.
+4. Run `npm run build` locally to confirm no broken image references.

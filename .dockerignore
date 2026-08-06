@@ -3,10 +3,8 @@ node_modules
 .git
 .env
 .env.local
-npm-debug.log
-tests
-playwright-report
-test-results
+*.log
+npm-debug.log*
+.DS_Store
 docs
-*.md
-.vscode
+README.md

@@ -1,19 +1,20 @@
+# Local development / preview — no Traefik required.
+# Usage: docker compose -f docker-compose.dev.yml up --build
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: http://localhost:3000
     image: midpoint-tech:dev
     container_name: midpoint-tech-dev
     restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      NODE_ENV: production
-      PORT: 3000
-      NEXT_PUBLIC_SITE_URL: http://localhost:3000
     ports:
       - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(r.status!==200)process.exit(1)}).catch(()=>process.exit(1))"]
       interval: 30s

@@ -1,114 +1,117 @@
 # Midpoint Tech
 
-Production-ready marketing and leasing website for **Midpoint Tech**, a technology-
-focused business destination at 300 Janadel Avenue, Halfway House, Midrand, Gauteng —
-a distinct sub-brand within the wider Midpoint commercial property portfolio.
+A production-ready Next.js website for **Midpoint Tech**, a technology-focused business campus at 300 Janadel Avenue, Halfway House, Midrand, Gauteng — part of the wider Midpoint commercial portfolio (`https://www.mid-point.co.za/`).
 
-## Overview
+**Design concept:** "The Meridian Line" — see `docs/design-system.md` for the full rationale and tokens.
 
-The site establishes Midpoint Tech's positioning, showcases available spaces with a
-filterable availability experience, and converts visitors via tour-booking and
-leasing-enquiry forms. Nearly all property-specific facts (unit sizes, rentals,
-infrastructure specification, amenities, tenant names) are **not yet confirmed** and
-are represented as clearly labelled sample data — see `docs/content-required.md`
-before treating anything here as verified.
+> Every property fact, contact detail, and image in this repository is clearly-labelled sample/placeholder data. See `docs/content-required.md` before launch.
 
 ## Stack
 
-Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS v4 ·
-Framer Motion · React Hook Form + Zod · Vitest · Playwright · Docker · Traefik.
+- Next.js 16 (App Router) + React 19 + TypeScript (strict)
+- Tailwind CSS v4, CSS-variable design tokens
+- Framer Motion, React Hook Form + Zod, Lucide icons
+- Vitest (unit) + Playwright (e2e)
+- Docker (multi-stage, standalone output) + Traefik labels for production routing
 
 ## Prerequisites
 
-- Node.js 22+
+- Node.js 20+
 - npm 10+
-- Docker + Docker Compose (for containerised runs/deployment)
+- Docker + Docker Compose (for containerised deployment)
 
 ## Local setup
 
 ```bash
 npm install
-cp .env.example .env
+cp .env.example .env.local
 npm run dev
+# visit http://localhost:3000
 ```
 
-Visit `http://localhost:3000`.
+## Environment setup
+
+Copy `.env.example` to `.env.local` for development, or provide real environment variables in your deployment platform. See that file for the full list; `src/env.ts` validates them at startup with Zod.
 
 ## Development commands
 
 ```bash
 npm run dev         # start the dev server
-npm run typecheck   # tsc --noEmit
-npm run lint        # ESLint
-npm run format      # Prettier (writes)
-npm test            # Vitest unit tests
-npm run e2e         # Playwright e2e tests (run `npx playwright install` first)
-npm run build       # production build
-npm start           # start the production build locally
+npm run lint         # ESLint
+npm run typecheck    # tsc --noEmit
+npm run build        # production build
+npm run start         # run the production build locally
 ```
+
+## Test commands
+
+```bash
+npm run test          # Vitest unit tests (schemas, filter logic, utils, analytics sanitisation)
+npm run test:watch    # Vitest in watch mode
+npm run test:e2e      # Playwright end-to-end tests (starts the app automatically)
+```
+
+## Docker commands
+
+```bash
+# Local preview, no Traefik required
+docker compose -f docker-compose.dev.yml up --build
+
+# Production, behind an existing Traefik instance — see docs/deployment.md
+docker network create traefik-public   # first time only
+docker compose build
+docker compose up -d
+docker compose logs -f web
+```
+
+## Production build
+
+```bash
+npm run build
+npm run start
+```
+
+The Docker image uses Next.js `output: "standalone"` for a minimal production runtime — see `Dockerfile`.
 
 ## Project structure
 
 ```
-src/app/            route segments (pages, layouts, API routes)
-src/components/      design-system primitives + domain components
-src/lib/             content, validation, seo, analytics, email, env, utils
-public/              placeholder imagery, floor plans, brand assets
-docs/                architecture, design system, deployment, content, security, etc.
-tests/unit/          Vitest suites
-tests/e2e/           Playwright suites
+src/app/           Routes, layouts, metadata, server actions, sitemap/robots/OG image
+src/components/     ui/ (design-system primitives), sections/, forms/, spaces/
+src/content/        Zod schemas + typed sample content (spaces, news, site config)
+src/lib/            Utilities: analytics, rate limiting, mail adapter, filtering, formatting
+docs/               Full documentation set (see below)
+public/media/       Placeholder SVG assets, clearly labelled as sample data
+tests/unit/         Vitest tests
+tests/e2e/          Playwright tests
 ```
 
-## Editing content
+## Content editing
 
-Content is typed, Zod-validated TypeScript under `src/lib/content/` — no CMS login
-required. See `docs/content-management.md` for exactly which files to edit, and
-`docs/architecture.md` for why this approach was chosen over a hosted CMS.
+Content is local, typed TypeScript validated by Zod — no external CMS required to run the site. See `docs/content-management.md` for how to edit spaces, news, and site-wide details, and `docs/asset-register.md` for adding real photography.
 
-## Docker
+## Documentation set
 
-```bash
-docker compose -f docker-compose.dev.yml up --build   # local, no Traefik, exposes :3000
-docker compose up -d --build                           # production, behind Traefik
-```
+- `docs/research-summary.md` — verified facts vs. assumptions
+- `docs/architecture.md` — stack and content-architecture decisions
+- `docs/content-required.md` — everything that must be confirmed before launch
+- `docs/asset-register.md` — image/asset inventory and requirements
+- `docs/design-system.md` — brand tokens, typography, motion, components
+- `docs/deployment.md` — exact Docker/Traefik commands
+- `docs/content-management.md` — day-to-day editing workflow
+- `docs/analytics.md` — event tracking and consent
+- `docs/accessibility.md` — WCAG 2.2 AA implementation and manual checklist
+- `docs/security.md` — headers, form security, secrets, container hardening
+- `docs/launch-checklist.md` — everything to confirm before going live
 
-Full deployment instructions are in `docs/deployment.md`.
+## Deployment summary
 
-## Documentation index
-
-- `docs/research-summary.md` — verified facts vs. positioning recommendations vs.
-  unconfirmed information
-- `docs/architecture.md` — technical/content architecture rationale
-- `docs/content-required.md` — outstanding property data and confirmations
-- `docs/asset-register.md` — every image/asset needed, dimensions, status
-- `docs/design-system.md` — tokens, typography, motion, components
-- `docs/deployment.md` — Docker + Traefik deployment runbook
-- `docs/content-management.md` — how to edit content
-- `docs/analytics.md` — event tracking and privacy approach
-- `docs/accessibility.md` — WCAG 2.2 AA implementation + manual checklist
-- `docs/security.md` — headers, form security, secrets handling
-- `docs/launch-checklist.md` — what remains before public launch
+Production deployment is a single Docker container behind an existing Traefik reverse proxy on an external Docker network (`TRAEFIK_NETWORK`, default `traefik-public`). Full step-by-step commands, including rollback and troubleshooting, are in `docs/deployment.md`.
 
 ## Troubleshooting
 
-- **Build fails fetching fonts**: shouldn't happen — fonts are self-hosted. If you
-  see a `next/font/google` error, check no code has reintroduced a Google-fetched
-  font.
-- **Form submissions "succeed" but no email arrives**: confirm `EMAIL_PROVIDER` is
-  `resend` (with `RESEND_API_KEY`) or a completed `smtp` implementation — the
-  default `log` provider only logs to stdout.
-- **Docker container unhealthy**: check `docker compose logs web` —
-  `src/lib/env.ts` throws on invalid/missing required environment variables.
-- **Traefik 404/502/TLS issues**: see the diagnosis section at the end of
-  `docs/deployment.md`.
+**Docker health check failing** — confirm the container is actually listening on port 3000 and `/api/health` returns `200`; check `docker compose logs web`.
 
-## Known limitations at time of this build
+**Traefik 404/502** — see the "Diagnosing common issues" section of `docs/deployment.md`.
 
-- Playwright browser binaries and a Docker daemon were not available in the sandbox
-  used to build this project, so the e2e suite and `docker build` could not be
-  executed here (though the app was fully verified via `tsc`, ESLint, Vitest, and
-  `next build`, and the Dockerfile/compose files were carefully reviewed). Run
-  `npx playwright install` and `docker build .` in a normal environment before
-  relying on those results.
-- All property, infrastructure, amenity and tenant content is sample data pending
-  confirmation — see `docs/content-required.md`.
+**Form submissions not arriving anywhere** — in development this is expected; submissions are logged to the server console only. Set `LEADS_WEBHOOK_URL` for production delivery — see `docs/content-management.md`.
