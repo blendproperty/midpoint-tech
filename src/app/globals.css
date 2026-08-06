@@ -2,23 +2,24 @@
 
 /* Hallmark · macrostructure: narrative-workflow · fingerprint: inline-heading+single-column+thick-rule-divider+outlined-button+none-image+horizontal-sweep */
 /* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 */
+/* Hallmark · theme: custom (stone-paper + ink-green + forest accent, Bitter/Geist pairing) — replaces the orange-on-cream palette used in every prior iteration */
 
 
 /* ==========================================================================
    Midpoint Tech design tokens — maximalist/editorial pass.
    ========================================================================== */
 :root {
-  --color-ink: #0d0d0a;
-  --color-ink-soft: #2a2a22;
-  --color-paper: #f8f6f0;
-  --color-paper-dim: #efebe0;
-  --color-line: #dcd6c4;
-  --color-line-dark: #3c3c30;
-  --color-signal: #d94a1f;
-  --color-signal-strong: #ab3a17;
-  --color-signal-on: #fff7f0;
-  --color-success: #2f6f4e;
-  --color-error: #ff5c5c;
+  --color-ink: oklch(19% 0.014 240);
+  --color-ink-soft: oklch(38% 0.014 240);
+  --color-paper: oklch(97% 0.003 240);
+  --color-paper-dim: oklch(93% 0.006 220);
+  --color-line: oklch(84% 0.008 220);
+  --color-line-dark: oklch(30% 0.016 220);
+  --color-signal: oklch(38% 0.085 152);
+  --color-signal-strong: oklch(29% 0.075 152);
+  --color-signal-on: oklch(98% 0.01 140);
+  --color-success: oklch(52% 0.11 150);
+  --color-error: oklch(58% 0.19 25);
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -46,7 +47,7 @@
   --color-signal-strong: var(--color-signal-strong);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
-  --font-display: var(--font-geist);
+  --font-display: var(--font-bitter);
   --font-body: var(--font-geist);
 }
 
@@ -75,9 +76,9 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-display), ui-serif, Georgia, serif;
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.01em;
 }
 
 :focus-visible {

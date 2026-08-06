@@ -13,6 +13,13 @@ const geist = localFont({
   weight: "100 900",
 });
 
+const bitter = localFont({
+  src: "../../node_modules/@fontsource-variable/bitter/files/bitter-latin-wght-normal.woff2",
+  variable: "--font-bitter",
+  display: "swap",
+  weight: "100 900",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -24,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-ZA" className={`${geist.variable} h-full`}>
+    <html lang="en-ZA" className={`${geist.variable} ${bitter.variable} h-full`}>
       <body className="flex min-h-full flex-col overflow-x-hidden bg-[var(--color-paper)] text-[var(--color-ink)] antialiased">
         <a href="#main-content" className="skip-link">
           Skip to main content
