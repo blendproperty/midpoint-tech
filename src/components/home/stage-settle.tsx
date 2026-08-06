@@ -1,6 +1,7 @@
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
+import { BlueprintMark } from "@/components/ui/blueprint-mark";
 import { siteConfig } from "@/lib/content/site";
 import { testimonials, tenantCategories } from "@/lib/content/testimonials";
 
@@ -11,7 +12,7 @@ export function StageSettle() {
 
   return (
     <div className="flex flex-col gap-16">
-      <div className="grid gap-10 md:grid-cols-2 md:items-start">
+      <div className="grid gap-10 md:grid-cols-2 md:items-center">
         <Reveal>
           <p className="max-w-md text-[var(--color-ink-soft)]">
             Midpoint Tech sits in Halfway House, Midrand — part of the same active commercial corridor connecting
@@ -34,6 +35,18 @@ export function StageSettle() {
         </Reveal>
 
         <Reveal delay={0.1}>
+          <div
+            className="relative aspect-[4/3] w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-paper-dim)]"
+            role="img"
+            aria-label="Stylised site plan illustration marking the Midrand location of Midpoint Tech — not a real map or floor plan"
+          >
+            <BlueprintMark variant="pin" className="absolute inset-6 h-[calc(100%-3rem)] w-[calc(100%-3rem)]" />
+          </div>
+        </Reveal>
+      </div>
+
+      <div className="grid gap-10 md:grid-cols-2 md:items-start">
+        <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
             Who Midpoint Tech is built for
           </p>
@@ -45,25 +58,27 @@ export function StageSettle() {
             ))}
           </ul>
         </Reveal>
-      </div>
 
-      {testimonials.length === 0 ? (
-        <div className="rounded-[var(--radius-lg)] border border-dashed border-[var(--color-line)] bg-[var(--color-paper-dim)] p-8 text-sm text-[var(--color-ink-soft)]">
-          Tenant stories and testimonials will appear here once businesses have moved in and given permission to
-          share their experience. No tenant names or quotes are published without confirmation.
-        </div>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-3">
-          {testimonials.map((t) => (
-            <blockquote key={t.attribution} className="rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-paper-dim)] p-6">
-              <p className="text-[var(--color-ink-soft)]">&ldquo;{t.quote}&rdquo;</p>
-              <footer className="mt-4 text-sm font-medium">
-                {t.attribution} <span className="font-normal text-[var(--color-ink-soft)]">— {t.role}</span>
-              </footer>
-            </blockquote>
-          ))}
-        </div>
-      )}
+        <Reveal delay={0.06}>
+          {testimonials.length === 0 ? (
+            <div className="rounded-[var(--radius-lg)] border border-dashed border-[var(--color-line)] bg-[var(--color-paper-dim)] p-8 text-sm text-[var(--color-ink-soft)]">
+              Tenant stories and testimonials will appear here once businesses have moved in and given permission
+              to share their experience. No tenant names or quotes are published without confirmation.
+            </div>
+          ) : (
+            <div className="flex flex-col gap-6">
+              {testimonials.map((t) => (
+                <blockquote key={t.attribution} className="rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-paper-dim)] p-6">
+                  <p className="text-[var(--color-ink-soft)]">&ldquo;{t.quote}&rdquo;</p>
+                  <footer className="mt-4 text-sm font-medium">
+                    {t.attribution} <span className="font-normal text-[var(--color-ink-soft)]">— {t.role}</span>
+                  </footer>
+                </blockquote>
+              ))}
+            </div>
+          )}
+        </Reveal>
+      </div>
     </div>
   );
 }

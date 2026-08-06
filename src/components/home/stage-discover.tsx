@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/reveal";
+import { BlueprintMark } from "@/components/ui/blueprint-mark";
 
 const pillars = [
   {
@@ -18,11 +19,14 @@ const pillars = [
 export function StageDiscover() {
   return (
     <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-      <p className="max-w-md text-[var(--color-ink-soft)]">
-        Midpoint Tech brings ambitious businesses together in a professional environment created for focus,
-        connection and growth — a credible base in Midrand from which technology teams can build, collaborate and
-        move forward.
-      </p>
+      <div>
+        <p className="max-w-md text-[var(--color-ink-soft)]">
+          Midpoint Tech brings ambitious businesses together in a professional environment created for focus,
+          connection and growth — a credible base in Midrand from which technology teams can build, collaborate
+          and move forward.
+        </p>
+        <BlueprintMark className="mt-8 hidden h-40 w-40 opacity-40 sm:block" />
+      </div>
 
       <dl className="divide-y divide-[var(--color-line)]">
         {pillars.map((pillar, i) => (

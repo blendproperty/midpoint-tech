@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/container";
 import { siteConfig } from "@/lib/content/site";
 import { trackEvent } from "@/lib/analytics";
 import { ensureGsapRegistered, gsap } from "@/lib/gsap";
+import { BlueprintMark } from "@/components/ui/blueprint-mark";
 
 export function Hero() {
   const scope = useRef<HTMLElement>(null);
@@ -55,6 +56,7 @@ export function Hero() {
       className="relative overflow-hidden border-b border-[var(--color-line-dark)] bg-[var(--color-ink)] text-[var(--color-paper)]"
     >
       <div className="grid-motif absolute inset-0 opacity-60" aria-hidden="true" />
+      <BlueprintMark className="pointer-events-none absolute -right-16 top-1/2 hidden h-[34rem] w-[34rem] -translate-y-1/2 opacity-[0.14] md:block" />
 
       <Container className="relative grid gap-10 py-28 md:grid-cols-[1.3fr_0.7fr] md:py-40">
         <div className="flex flex-col gap-8">
