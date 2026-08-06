@@ -1,3 +1,9 @@
+# Production deployment behind an existing Traefik reverse proxy.
+# Assumes Traefik is already running separately and exposes the
+# external network named by TRAEFIK_NETWORK.
+#
+# See docs/deployment.md for full setup commands.
+
 services:
   web:
     build:
@@ -5,44 +11,59 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_SITE_URL: https://${APP_DOMAIN:-tech.mid-point.co.za}
+        NEXT_PUBLIC_GTM_ID: ${NEXT_PUBLIC_GTM_ID:-}
+        NEXT_PUBLIC_MAPS_EMBED_KEY: ${NEXT_PUBLIC_MAPS_EMBED_KEY:-}
     image: midpoint-tech:latest
     container_name: midpoint-tech
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
       NODE_ENV: production
-      PORT: 3000
+      NEXT_PUBLIC_SITE_URL: https://${APP_DOMAIN:-tech.mid-point.co.za}
+      LEADS_WEBHOOK_URL: ${LEADS_WEBHOOK_URL:-}
+      NEXT_PUBLIC_GTM_ID: ${NEXT_PUBLIC_GTM_ID:-}
+      NEXT_PUBLIC_MAPS_EMBED_KEY: ${NEXT_PUBLIC_MAPS_EMBED_KEY:-}
     networks:
       - internal
       - traefik-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK:-traefik-public}"
+
+      # HTTP -> HTTPS redirect
+      - "traefik.http.routers.midpoint-tech-http.rule=Host(`${APP_DOMAIN:-tech.mid-point.co.za}`)"
+      - "traefik.http.routers.midpoint-tech-http.entrypoints=web"
+      - "traefik.http.routers.midpoint-tech-http.middlewares=midpoint-tech-https-redirect"
+      - "traefik.http.middlewares.midpoint-tech-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.midpoint-tech-https-redirect.redirectscheme.permanent=true"
+
+      # HTTPS router
+      - "traefik.http.routers.midpoint-tech-secure.rule=Host(`${APP_DOMAIN:-tech.mid-point.co.za}`)"
+      - "traefik.http.routers.midpoint-tech-secure.entrypoints=websecure"
+      - "traefik.http.routers.midpoint-tech-secure.tls=true"
+      - "traefik.http.routers.midpoint-tech-secure.tls.certresolver=${LETSENCRYPT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.midpoint-tech-secure.service=midpoint-tech"
+
+      # Service / port
+      - "traefik.http.services.midpoint-tech.loadbalancer.server.port=3000"
+
+      # Secure headers middleware
+      - "traefik.http.middlewares.midpoint-tech-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.midpoint-tech-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.midpoint-tech-headers.headers.stsPreload=true"
+      - "traefik.http.middlewares.midpoint-tech-headers.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.midpoint-tech-headers.headers.frameDeny=true"
+      - "traefik.http.routers.midpoint-tech-secure.middlewares=midpoint-tech-headers"
+
+      # Compression
+      - "traefik.http.middlewares.midpoint-tech-compress.compress=true"
+      - "traefik.http.routers.midpoint-tech-secure.middlewares=midpoint-tech-headers,midpoint-tech-compress"
+
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(r.status!==200)process.exit(1)}).catch(()=>process.exit(1))"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 15s
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=${TRAEFIK_NETWORK:-traefik-public}"
-      - "traefik.http.routers.midpoint-tech-http.rule=Host(`${APP_DOMAIN}`)"
-      - "traefik.http.routers.midpoint-tech-http.entrypoints=web"
-      - "traefik.http.routers.midpoint-tech-http.middlewares=midpoint-tech-https-redirect"
-      - "traefik.http.middlewares.midpoint-tech-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.midpoint-tech-https-redirect.redirectscheme.permanent=true"
-      - "traefik.http.routers.midpoint-tech.rule=Host(`${APP_DOMAIN}`)"
-      - "traefik.http.routers.midpoint-tech.entrypoints=websecure"
-      - "traefik.http.routers.midpoint-tech.tls=true"
-      - "traefik.http.routers.midpoint-tech.tls.certresolver=${LETSENCRYPT_RESOLVER:-letsencrypt}"
-      - "traefik.http.routers.midpoint-tech.service=midpoint-tech"
-      - "traefik.http.services.midpoint-tech.loadbalancer.server.port=3000"
-      - "traefik.http.middlewares.midpoint-tech-compress.compress=true"
-      - "traefik.http.middlewares.midpoint-tech-secure-headers.headers.stsSeconds=31536000"
-      - "traefik.http.middlewares.midpoint-tech-secure-headers.headers.stsIncludeSubdomains=true"
-      - "traefik.http.middlewares.midpoint-tech-secure-headers.headers.forceSTSHeader=true"
-      - "traefik.http.middlewares.midpoint-tech-secure-headers.headers.contentTypeNosniff=true"
-      - "traefik.http.middlewares.midpoint-tech-secure-headers.headers.browserXssFilter=true"
-      - "traefik.http.routers.midpoint-tech.middlewares=midpoint-tech-compress,midpoint-tech-secure-headers"
 
 networks:
   internal:

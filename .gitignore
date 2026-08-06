@@ -41,7 +41,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# testing artifacts
-/playwright-report
-/test-results
-package-lock.json
+# testing
+/playwright-report/
+/test-results/
