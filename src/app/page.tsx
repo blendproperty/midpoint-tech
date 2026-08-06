@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
+import { Marquee } from "@/components/home/marquee";
 import { Positioning } from "@/components/home/positioning";
 import { AvailabilityPreview } from "@/components/home/availability-preview";
 import { Ecosystem } from "@/components/home/ecosystem";
@@ -24,9 +25,10 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd()) }}
       />
       <Hero />
+      <Marquee />
       <Positioning />
-      <AvailabilityPreview />
       <Ecosystem />
+      <AvailabilityPreview />
       <ExperienceTeaser />
       <LocationTeaser />
       <SocialProof />

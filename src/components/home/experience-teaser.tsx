@@ -1,34 +1,102 @@
+"use client";
+import { useRef } from "react";
+import Image from "next/image";
+import { useGSAP } from "@gsap/react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { Section } from "@/components/ui/section";
-import { MediaFrame } from "@/components/ui/media-frame";
 import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/motion/reveal";
+import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsap";
 
 const frames = [
-  { src: "/images/campus/placeholder-arrival.svg", alt: "Placeholder image of the arrival and reception experience at Midpoint Tech" },
-  { src: "/images/campus/placeholder-workspace.svg", alt: "Placeholder image of a workspace environment at Midpoint Tech" },
-  { src: "/images/campus/placeholder-shared.svg", alt: "Placeholder image of a shared collaboration space at Midpoint Tech" },
+  { seed: "midpointtech-arrival", alt: "Placeholder image of the arrival and reception experience at Midpoint Tech" },
+  { seed: "midpointtech-workspace", alt: "Placeholder image of a workspace environment at Midpoint Tech" },
+  { seed: "midpointtech-shared", alt: "Placeholder image of a shared collaboration space at Midpoint Tech" },
 ];
 
 export function ExperienceTeaser() {
+  const scope = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      ensureGsapRegistered();
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion || window.innerWidth < 768) return;
+
+      const pinTarget = scope.current?.querySelector("[data-pin-panel]");
+      const track = scope.current?.querySelector("[data-gallery-track]");
+      if (!pinTarget || !track) return;
+
+      ScrollTrigger.create({
+        trigger: scope.current!,
+        start: "top top",
+        end: "bottom bottom",
+        pin: pinTarget,
+        pinSpacing: false,
+      });
+
+      gsap.utils.toArray<HTMLElement>("[data-gallery-frame]").forEach((frame) => {
+        gsap.fromTo(
+          frame,
+          { scale: 0.82, opacity: 0.3 },
+          {
+            scale: 1,
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: frame,
+              start: "top 85%",
+              end: "top 40%",
+              scrub: true,
+            },
+          },
+        );
+        gsap.to(frame, {
+          opacity: 0.25,
+          ease: "none",
+          scrollTrigger: {
+            trigger: frame,
+            start: "bottom 40%",
+            end: "bottom 5%",
+            scrub: true,
+          },
+        });
+      });
+    },
+    { scope },
+  );
+
   return (
-    <Section>
-      <Container>
-        <div className="flex flex-wrap items-end justify-between gap-6">
+    <section ref={scope} className="border-t border-[var(--color-line)]">
+      <Container className="grid gap-10 md:grid-cols-2">
+        <div data-pin-panel className="flex h-fit flex-col gap-6 self-start py-24 md:py-0">
           <Heading eyebrow="The environment">A workplace experience worth arriving at</Heading>
-          <Button href="/experience" variant="secondary" showArrow>
+          <p className="max-w-md text-[var(--color-ink-soft)]">
+            From the moment you arrive, Midpoint Tech is built to feel considered — a workplace environment that
+            technology teams and their clients notice.
+          </p>
+          <Button href="/experience" variant="secondary" showArrow className="w-fit">
             See the full experience
           </Button>
         </div>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {frames.map((frame, i) => (
-            <Reveal key={frame.src} delay={i * 0.06}>
-              <MediaFrame src={frame.src} alt={frame.alt} width={800} height={600} className="aspect-[4/3]" sizes="(min-width:1024px) 420px, 100vw" />
-            </Reveal>
+
+        <div data-gallery-track className="flex flex-col gap-24 py-24">
+          {frames.map((frame) => (
+            <div
+              key={frame.seed}
+              data-gallery-frame
+              className="relative aspect-[4/3] w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-line)]"
+            >
+              <Image
+                src={`https://picsum.photos/seed/${frame.seed}/1200/900`}
+                alt={frame.alt}
+                fill
+                sizes="(min-width:768px) 45vw, 100vw"
+                className="object-cover grayscale contrast-110"
+              />
+            </div>
           ))}
         </div>
       </Container>
-    </Section>
+    </section>
   );
 }

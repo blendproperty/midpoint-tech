@@ -1,36 +1,35 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Midpoint Tech design tokens
-   All brand values live here as CSS variables. Components should reference
-   tokens (via Tailwind's @theme mapping below) rather than hard-coded
-   colours, spacing or radii. See /docs/design-system.md.
+   Midpoint Tech design tokens — maximalist/editorial pass.
    ========================================================================== */
 :root {
-  --color-ink: #14140f;
+  --color-ink: #0d0d0a;
   --color-ink-soft: #2a2a22;
   --color-paper: #f8f6f0;
   --color-paper-dim: #efebe0;
   --color-line: #dcd6c4;
   --color-line-dark: #3c3c30;
-  --color-signal: #cf4520;
-  --color-signal-strong: #a6350f;
+  --color-signal: #ff4d1c;
+  --color-signal-strong: #d63a10;
   --color-signal-on: #fff7f0;
   --color-success: #2f6f4e;
-  --color-error: #b3261e;
+  --color-error: #ff5c5c;
 
-  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
-  --duration-slow: 450ms;
+  --duration-slow: 600ms;
 
   --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 10px;
+  --radius-md: 6px;
+  --radius-lg: 20px;
   --border-hairline: 1px solid var(--color-line);
 
-  --container-max: 1320px;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --container-max: 1440px;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
 }
 
 @theme inline {
@@ -43,8 +42,8 @@
   --color-signal-strong: var(--color-signal-strong);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
-  --font-display: var(--font-space-grotesk);
-  --font-body: var(--font-inter);
+  --font-display: var(--font-outfit);
+  --font-body: var(--font-geist);
 }
 
 html {
@@ -73,7 +72,7 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
 }
 
 :focus-visible {
@@ -91,7 +90,7 @@ h1, h2, h3, h4 {
   padding: 0.75rem 1.25rem;
   z-index: 100;
   border-radius: var(--radius-md);
-  transition: top var(--duration-base) var(--ease-standard);
+  transition: top var(--duration-base) var(--ease-out-quart);
 }
 
 .skip-link:focus {
@@ -119,4 +118,21 @@ h1, h2, h3, h4 {
 ::selection {
   background: var(--color-signal);
   color: var(--color-signal-on);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }

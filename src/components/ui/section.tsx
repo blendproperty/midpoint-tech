@@ -19,7 +19,7 @@ export function Section({
     <Tag
       id={id}
       className={cn(
-        "py-16 md:py-24",
+        "py-24 md:py-40",
         dark && "section-dark",
         motif && "grid-motif",
         className,

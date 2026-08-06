@@ -19,7 +19,7 @@ export function Heading({ as = "h2", eyebrow, className, children }: HeadingProp
   return (
     <div>
       {eyebrow && (
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-signal-strong)]">
+        <p className="mb-4 max-w-lg text-lg font-[var(--font-display)] font-medium text-[var(--color-signal-strong)]">
           {eyebrow}
         </p>
       )}
