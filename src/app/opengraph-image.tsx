@@ -1,10 +1,10 @@
 import { ImageResponse } from "next/og";
-import { siteConfig } from "@/lib/content/site";
+import { site } from "@/content/site";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default async function OpengraphImage() {
+export default function OpengraphImage() {
   return new ImageResponse(
     (
       <div
@@ -13,23 +13,24 @@ export default async function OpengraphImage() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end",
-          background: "#14140f",
-          padding: 80,
-          color: "#f8f6f0",
+          justifyContent: "center",
+          padding: "80px",
+          background: "#14231F",
+          color: "#EDEFEA",
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-          <div style={{ display: "flex", width: 16, height: 16, borderRadius: 999, background: "#cf4520" }} />
-          <div style={{ display: "flex", fontSize: 28, fontWeight: 600 }}>{siteConfig.name}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 24, letterSpacing: 4, color: "#E0A63D" }}>
+          MIDRAND · GAUTENG
         </div>
-        <div style={{ display: "flex", fontSize: 56, fontWeight: 600, lineHeight: 1.1, maxWidth: 900 }}>{siteConfig.tagline}</div>
-        <div style={{ display: "flex", fontSize: 24, marginTop: 20, color: "#dcd6c4" }}>
-          {siteConfig.address.line1}, {siteConfig.address.city} · {siteConfig.address.region}
+        <div style={{ display: "flex", marginTop: 24, fontSize: 64, fontWeight: 700, maxWidth: 900 }}>
+          {site.tagline}
+        </div>
+        <div style={{ display: "flex", marginTop: 32, fontSize: 28, color: "#C7CDC0" }}>
+          Midpoint Tech — {site.address.line1}, {site.address.city}
         </div>
       </div>
     ),
-    { ...size },
+    { ...size }
   );
 }
