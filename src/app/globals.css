@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Midpoint Tech design tokens
+   All brand values live here as CSS variables. Components should reference
+   tokens (via Tailwind's @theme mapping below) rather than hard-coded
+   colours, spacing or radii. See /docs/design-system.md.
+   ========================================================================== */
+:root {
+  --color-ink: #14140f;
+  --color-ink-soft: #2a2a22;
+  --color-paper: #f8f6f0;
+  --color-paper-dim: #efebe0;
+  --color-line: #dcd6c4;
+  --color-line-dark: #3c3c30;
+  --color-signal: #cf4520;
+  --color-signal-strong: #a6350f;
+  --color-signal-on: #fff7f0;
+  --color-success: #2f6f4e;
+  --color-error: #b3261e;
+
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 450ms;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 10px;
+  --border-hairline: 1px solid var(--color-line);
+
+  --container-max: 1320px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-paper: var(--color-paper);
+  --color-paper-dim: var(--color-paper-dim);
+  --color-line: var(--color-line);
+  --color-signal: var(--color-signal);
+  --color-signal-strong: var(--color-signal-strong);
+  --color-success: var(--color-success);
+  --color-error: var(--color-error);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: 0.75rem 1.25rem;
+  z-index: 100;
+  border-radius: var(--radius-md);
+  transition: top var(--duration-base) var(--ease-standard);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.grid-motif {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-line) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 60%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.section-dark {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.section-dark .grid-motif {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-line-dark) 80%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-line-dark) 80%, transparent) 1px, transparent 1px);
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-signal-on);
+}
