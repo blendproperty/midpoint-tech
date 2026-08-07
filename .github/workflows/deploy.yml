@@ -1,0 +1,30 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 93.127.186.194
+          username: root
+          key: ${{ secrets.MIDPOINT_DEPLOY_SSH_KEY }}
+          script: |
+            set -e
+            cd /root/midpoint-tech
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose build --pull
+            docker compose up -d
+            docker image prune -f
+
+      - name: Verify health endpoint
+        run: |
+          sleep 10
+          curl -fsS https://midpoint-tech.onpointoffices.co.za/api/health
