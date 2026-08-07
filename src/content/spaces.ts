@@ -5,6 +5,10 @@ import { spaceSchema, type Space } from "./schema";
  * content (isSample: true). None of these units, sizes, rentals or
  * specifications are verified. Replace via docs/content-required.md
  * before launch. See docs/content-management.md for how to edit.
+ *
+ * Gallery images are real, free-to-use photos sourced from Unsplash
+ * (illustrative stock photography, not actual photos of this
+ * building — swap for real site photography before launch).
  */
 const raw: Space[] = [
   {
@@ -34,8 +38,8 @@ const raw: Space[] = [
     ],
     parkingBays: 9,
     gallery: [
-      { src: "/media/spaces/placeholder-office-1.svg", alt: "Placeholder interior view of Suite 201, an open-plan office with meeting rooms" },
-      { src: "/media/spaces/placeholder-office-2.svg", alt: "Placeholder view of the entrance to Suite 201" },
+      { src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of an open-plan office interior with desks, similar in feel to Suite 201" },
+      { src: "https://images.unsplash.com/photo-1758448500688-3ababa93fd67?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a modern lobby with reception desk, similar in feel to the entrance to Suite 201" },
     ],
     floorPlan: { src: "/media/floorplans/placeholder-floorplan.svg", alt: "Placeholder floor plan for Suite 201" },
     brochureUrl: null,
@@ -68,7 +72,7 @@ const raw: Space[] = [
     ],
     parkingBays: 47,
     gallery: [
-      { src: "/media/spaces/placeholder-floor-1.svg", alt: "Placeholder open shell-and-core floor plate in Block B" },
+      { src: "https://images.unsplash.com/photo-1780668495634-28c1151bbec2?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a spacious open shell-and-core interior with high ceilings and natural light, similar in feel to Block B's 4th floor" },
     ],
     floorPlan: { src: "/media/floorplans/placeholder-floorplan.svg", alt: "Placeholder floor plan for Block B, 4th floor" },
     brochureUrl: null,
@@ -98,7 +102,7 @@ const raw: Space[] = [
     ],
     parkingBays: 5,
     gallery: [
-      { src: "/media/spaces/placeholder-office-3.svg", alt: "Placeholder view of Suite 108 open-plan layout" },
+      { src: "https://images.unsplash.com/photo-1718220216044-006f43e3a9b1?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a compact open-plan office with desks and chairs, similar in feel to Suite 108" },
     ],
     floorPlan: null,
     brochureUrl: null,
@@ -128,7 +132,7 @@ const raw: Space[] = [
     ],
     parkingBays: null,
     gallery: [
-      { src: "/media/spaces/placeholder-desks-1.svg", alt: "Placeholder view of shared desk area in Block C" },
+      { src: "https://images.unsplash.com/photo-1582005450386-52b25f82d9bb?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of people working at shared desks with laptops, similar in feel to the Block C shared desk area" },
     ],
     floorPlan: null,
     brochureUrl: null,
