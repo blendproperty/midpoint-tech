@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/content/site";
 import { ArrowUpRight } from "lucide-react";
 
@@ -10,7 +11,7 @@ export function LocationTeaser() {
   return (
     <Section tone="ink">
       <Container className="grid gap-12 md:grid-cols-2 md:items-center">
-        <div>
+        <Reveal x={-24} y={0}>
           <Eyebrow className="text-brass-400">Location</Eyebrow>
           <h2 className="mt-4 text-step-3 font-display font-semibold text-stone-100">
             On the corridor between Johannesburg and Pretoria.
@@ -35,13 +36,13 @@ export function LocationTeaser() {
               Get directions <ArrowUpRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
-        </div>
+        </Reveal>
 
         {/* Static styled location panel — no API key required */}
-        <div className="relative aspect-[4/3] overflow-hidden border border-stone-100/15 bg-ink-900">
+        <Reveal x={24} y={0} delay={0.1} className="relative aspect-[4/3] overflow-hidden border border-stone-100/15 bg-ink-900">
           <div
             aria-hidden
-            className="absolute inset-0 opacity-30"
+            className="absolute inset-0 opacity-30 animate-grid-drift"
             style={{
               backgroundImage:
                 "linear-gradient(to right, #EDEFEA 1px, transparent 1px), linear-gradient(to bottom, #EDEFEA 1px, transparent 1px)",
@@ -49,10 +50,13 @@ export function LocationTeaser() {
             }}
           />
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-            <span className="block h-3 w-3 rounded-full bg-brass-500 mx-auto" aria-hidden />
+            <span aria-hidden className="relative mx-auto flex h-3 w-3 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brass-500/60" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-brass-500" />
+            </span>
             <p className="tick-label mt-3 text-stone-100">Halfway House, Midrand</p>
           </div>
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );
