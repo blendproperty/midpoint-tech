@@ -13,10 +13,30 @@ export const metadata: Metadata = {
 };
 
 const moments = [
-  { title: "Arrival", body: "A considered lobby and entrance sequence that sets the tone before a single meeting starts.", img: "placeholder-experience-4" },
-  { title: "Focus", body: "Fitted and shell-and-core suites configured for deep work as much as for client meetings.", img: "placeholder-experience-1" },
-  { title: "Collaboration", body: "Shared spaces for meeting, informal conversation and cross-team collaboration.", img: "placeholder-experience-2" },
-  { title: "Landscape", body: "Landscaped grounds between buildings — a deliberate break from the desk.", img: "placeholder-experience-3" },
+  {
+    title: "Arrival",
+    body: "A considered lobby and entrance sequence that sets the tone before a single meeting starts.",
+    src: "https://images.unsplash.com/photo-1774921676536-12e96b39238c?auto=format&fit=crop&w=1600&q=80",
+    alt: "Illustrative stock photo of a modern reception desk with a tree and people",
+  },
+  {
+    title: "Focus",
+    body: "Fitted and shell-and-core suites configured for deep work as much as for client meetings.",
+    src: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1600&q=80",
+    alt: "Illustrative stock photo of someone working at a desk with monitors",
+  },
+  {
+    title: "Collaboration",
+    body: "Shared spaces for meeting, informal conversation and cross-team collaboration.",
+    src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80",
+    alt: "Illustrative stock photo of people sitting together around a table in a meeting",
+  },
+  {
+    title: "Landscape",
+    body: "Landscaped grounds between buildings — a deliberate break from the desk.",
+    src: "https://images.unsplash.com/photo-1737280482439-1142df4f659d?auto=format&fit=crop&w=1600&q=80",
+    alt: "Illustrative stock photo of a building with landscaped grounds and grass",
+  },
 ];
 
 export default function ExperiencePage() {
@@ -41,7 +61,7 @@ export default function ExperiencePage() {
       {moments.map((m, i) => (
         <Section key={m.title} tone={i % 2 === 0 ? "raised" : "stone"}>
           <Container className={`grid gap-12 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}>
-            <MediaFrame media={{ src: `/media/experience/${m.img}.svg`, alt: `Placeholder image illustrating the ${m.title.toLowerCase()} moment at Midpoint Tech` }} className="aspect-[4/3]" />
+            <MediaFrame media={{ src: m.src, alt: m.alt }} className="aspect-[4/3]" />
             <div>
               <p className="tick-label text-brass-600">0{i + 1} — {m.title}</p>
               <h2 className="mt-3 text-step-2 font-display font-semibold text-ink-900">{m.title}</h2>
