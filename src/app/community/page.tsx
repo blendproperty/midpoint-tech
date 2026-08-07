@@ -42,7 +42,7 @@ export default function CommunityPage() {
               guarantee of formal collaboration.
             </p>
           </div>
-          <MediaFrame media={{ src: "/media/community/placeholder-community-1.svg", alt: "Placeholder image representing the Midpoint Tech community" }} className="aspect-[4/3]" />
+          <MediaFrame media={{ src: "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a group of people sitting around a table together" }} className="aspect-[4/3]" />
         </Container>
       </Section>
 
