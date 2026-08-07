@@ -35,7 +35,6 @@ export function Hero() {
         aria-hidden
         style={{ y: gridY }}
         className="pointer-events-none absolute inset-0 opacity-[0.07] animate-grid-drift"
-        style-position="unset"
       >
         <div
           className="absolute inset-0"
@@ -83,7 +82,7 @@ export function Hero() {
                   className="inline-block [transform-style:preserve-3d] will-change-transform"
                 >
                   {word}
-                  {i < words.length - 1 ? " " : ""}
+                  {i < words.length - 1 ? " " : ""}
                 </motion.span>
               ))}
             </motion.span>
