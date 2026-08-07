@@ -3,12 +3,13 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { MediaFrame } from "@/components/ui/MediaFrame";
+import { Reveal } from "@/components/ui/Reveal";
 
 export function ExperienceTeaser() {
   return (
     <Section tone="raised">
       <Container className="grid gap-12 md:grid-cols-2 md:items-center">
-        <div>
+        <Reveal x={-24} y={0}>
           <Eyebrow>The environment</Eyebrow>
           <h2 className="mt-4 text-step-3 font-display font-semibold text-ink-900">
             A workplace built for focus and for people.
@@ -25,11 +26,14 @@ export function ExperienceTeaser() {
           <div className="mt-8">
             <Button href="/experience" variant="secondary">See the full experience</Button>
           </div>
-        </div>
-        <MediaFrame
-          media={{ src: "https://images.unsplash.com/photo-1785308269647-e56d16b5eb85?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a landscaped paved pathway between modern buildings" }}
-          className="aspect-[4/5] md:aspect-[3/4]"
-        />
+        </Reveal>
+        <Reveal x={24} y={0} delay={0.1} className="group">
+          <MediaFrame
+            media={{ src: "https://images.unsplash.com/photo-1785308269647-e56d16b5eb85?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a landscaped paved pathway between modern buildings" }}
+            className="aspect-[4/5] md:aspect-[3/4]"
+            zoomOnHover
+          />
+        </Reveal>
       </Container>
     </Section>
   );
