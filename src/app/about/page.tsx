@@ -35,7 +35,7 @@ export default function AboutPage() {
       <Section tone="raised">
         <Container className="grid gap-12 md:grid-cols-2 md:items-center">
           <MediaFrame
-            media={{ src: "/media/about/placeholder-about-1.svg", alt: "Placeholder image representing the Midpoint Tech campus" }}
+            media={{ src: "https://images.unsplash.com/photo-1783315943625-6c00dc4b265b?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a minimalist concrete courtyard with plants, similar in feel to the Midpoint Tech campus" }}
             className="aspect-[4/5]"
           />
           <div>
