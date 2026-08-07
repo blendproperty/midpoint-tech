@@ -30,13 +30,18 @@ export function SiteNav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-colors duration-300",
-        scrolled || open ? "bg-ink-950/95 backdrop-blur border-b border-stone-100/10" : "bg-transparent"
+        "sticky top-0 z-40 border-b transition-all duration-300",
+        "bg-ink-950/90 backdrop-blur-md",
+        scrolled || open ? "border-stone-100/10 shadow-[0_1px_0_0_rgba(0,0,0,0.2)]" : "border-transparent"
       )}
     >
       <Container className="flex h-20 items-center justify-between">
-        <Link href="/" className="font-display text-lg font-semibold tracking-tight text-stone-100">
-          Midpoint <span className="text-brass-400">Tech</span>
+        <Link
+          href="/"
+          className="group font-display text-lg font-semibold tracking-tight text-stone-100 transition-transform duration-300 hover:-translate-y-0.5"
+        >
+          Midpoint{" "}
+          <span className="text-brass-400 transition-colors group-hover:text-brass-300">Tech</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
@@ -48,11 +53,18 @@ export function SiteNav() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "text-sm font-medium text-stone-200 hover:text-brass-400 transition-colors",
+                  "group relative text-sm font-medium text-stone-200 transition-colors hover:text-brass-400",
                   active && "text-brass-400"
                 )}
               >
                 {item.label}
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-brass-400 transition-transform duration-300 ease-out group-hover:scale-x-100",
+                    active && "scale-x-100"
+                  )}
+                />
               </Link>
             );
           })}
