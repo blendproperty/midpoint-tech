@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/content/site";
+import { campusAerialDataUri } from "@/content/campus-aerial";
 import { ArrowUpRight } from "lucide-react";
 
 export function LocationTeaser() {
@@ -38,18 +39,33 @@ export function LocationTeaser() {
           </div>
         </Reveal>
 
-        {/* Static styled location panel — no API key required */}
-        <Reveal x={24} y={0} delay={0.1} className="relative aspect-[4/3] overflow-hidden border border-stone-100/15 bg-ink-900">
+        {/* Real aerial rendering of the campus (300 / 100 Janadel Avenue) */}
+        <Reveal
+          x={24}
+          y={0}
+          delay={0.1}
+          className="group relative aspect-[4/3] overflow-hidden border border-stone-100/15 bg-ink-900"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={campusAerialDataUri}
+            alt="Aerial architectural rendering of the Midpoint Tech campus at 300 and 100 Janadel Avenue, showing the two office blocks, covered parking, the circular atrium entrance, and landscaped grounds"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+          />
           <div
             aria-hidden
-            className="absolute inset-0 opacity-30 animate-grid-drift"
+            className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/10 to-transparent"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 opacity-20 animate-grid-drift mix-blend-overlay"
             style={{
               backgroundImage:
                 "linear-gradient(to right, #EDEFEA 1px, transparent 1px), linear-gradient(to bottom, #EDEFEA 1px, transparent 1px)",
               backgroundSize: "40px 40px",
             }}
           />
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
             <span aria-hidden className="relative mx-auto flex h-3 w-3 items-center justify-center">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brass-500/60" />
               <span className="relative inline-flex h-3 w-3 rounded-full bg-brass-500" />
