@@ -14,7 +14,7 @@ const raw: NewsArticle[] = [
       "The campus sits at 300 Janadel Avenue, Halfway House, Midrand — a position on the business corridor between Johannesburg and Pretoria.",
       "Full leasing information, available spaces and a tour booking form are live on this site now.",
     ],
-    cover: { src: "/media/news/placeholder-news-1.svg", alt: "Placeholder cover image for the Midpoint Tech launch announcement" },
+    cover: { src: "https://images.unsplash.com/photo-1602578984228-c98a9b995f3e?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a city skyline under a blue sky" },
     isSample: true,
   },
   {
@@ -28,7 +28,7 @@ const raw: NewsArticle[] = [
       "Midrand's position between Johannesburg and Pretoria continues to make it a practical base for teams that need to serve both metros without committing to either.",
       "This piece will be replaced with a verified, sourced article ahead of launch — treat the current text as a placeholder.",
     ],
-    cover: { src: "/media/news/placeholder-news-2.svg", alt: "Placeholder cover image for an insight article about Midrand" },
+    cover: { src: "https://images.unsplash.com/photo-1577948000111-9c970dfe3743?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative aerial stock photo of an urban city skyline during daytime" },
     isSample: true,
   },
 ];
