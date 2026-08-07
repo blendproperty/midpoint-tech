@@ -1,7 +1,7 @@
 "use client";
 
+import { Fragment, useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -73,17 +73,18 @@ export function Hero() {
               className="inline"
             >
               {words.map((word, i) => (
-                <motion.span
-                  key={`${word}-${i}`}
-                  variants={{
-                    hidden: reduce ? {} : { opacity: 0, y: 32, rotateX: -40 },
-                    show: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
-                  }}
-                  className="inline-block [transform-style:preserve-3d] will-change-transform"
-                >
-                  {word}
+                <Fragment key={`${word}-${i}`}>
+                  <motion.span
+                    variants={{
+                      hidden: reduce ? {} : { opacity: 0, y: 32, rotateX: -40 },
+                      show: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+                    }}
+                    className="inline-block [transform-style:preserve-3d] will-change-transform"
+                  >
+                    {word}
+                  </motion.span>
                   {i < words.length - 1 ? " " : ""}
-                </motion.span>
+                </Fragment>
               ))}
             </motion.span>
           </h1>
