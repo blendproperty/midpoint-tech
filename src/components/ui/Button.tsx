@@ -11,11 +11,11 @@ type Common = {
 };
 
 const base =
-  "inline-flex items-center gap-2 px-6 py-3 text-[0.95rem] font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 rounded-[2px]";
+  "group inline-flex items-center gap-2 px-6 py-3 text-[0.95rem] font-medium transition-all duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 rounded-[2px] hover:scale-[1.03] active:scale-[0.96] will-change-transform";
 
 function variantClasses(variant: Common["variant"], tone: Common["tone"]) {
   if (variant === "primary") {
-    return "bg-brass-500 text-ink-950 hover:bg-brass-400";
+    return "bg-brass-500 text-ink-950 hover:bg-brass-400 shadow-[0_0_0_0_rgba(224,166,61,0)] hover:shadow-[0_8px_24px_-8px_rgba(224,166,61,0.55)]";
   }
   if (variant === "secondary") {
     return tone === "on-ink"
@@ -39,7 +39,12 @@ export function Button({
   const content = (
     <>
       {children}
-      {icon && <ArrowUpRight className="h-4 w-4" aria-hidden />}
+      {icon && (
+        <ArrowUpRight
+          className="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          aria-hidden
+        />
+      )}
     </>
   );
   if (href) {
