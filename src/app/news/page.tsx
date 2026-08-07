@@ -1,48 +1,40 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { MediaFrame } from "@/components/ui/media-frame";
-import { Badge } from "@/components/ui/badge";
-import { articles } from "@/lib/content/news";
+import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { MediaFrame } from "@/components/ui/MediaFrame";
+import { newsArticles } from "@/content/news";
 import { formatDate } from "@/lib/utils";
-import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata({
+export const metadata: Metadata = {
   title: "News & insights",
-  description: "Announcements, insights and updates from Midpoint Tech in Midrand.",
-  path: "/news",
-});
+  description: "Announcements, insights and events from Midpoint Tech in Midrand.",
+  alternates: { canonical: "/news" },
+};
 
 export default function NewsPage() {
   return (
-    <Section className="pt-32">
+    <Section tone="stone" className="pt-14">
       <Container>
-        <Heading as="h1" eyebrow="News & insights">
-          Updates from Midpoint Tech
-        </Heading>
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
-          {articles.map((article) => (
-            <article key={article.slug} className="flex flex-col gap-4">
-              <Link href={`/news/${article.slug}`}>
-                <MediaFrame src={article.coverImage.src} alt={article.coverImage.alt} width={800} height={500} className="aspect-[16/10]" sizes="(min-width:768px) 480px, 100vw" />
-              </Link>
-              <div>
-                <div className="flex items-center gap-2">
-                  <Badge tone="sample">Sample article</Badge>
-                  <time dateTime={article.publishedAt} className="text-xs text-[var(--color-ink-soft)]">
-                    {formatDate(article.publishedAt)}
-                  </time>
-                </div>
-                <h2 className="mt-2 font-[var(--font-display)] text-xl font-medium">
-                  <Link href={`/news/${article.slug}`} className="hover:underline">
-                    {article.title}
-                  </Link>
-                </h2>
-                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{article.excerpt}</p>
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "News" }]} />
+        <div className="mt-8 max-w-2xl">
+          <Eyebrow>News</Eyebrow>
+          <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">News and insights</h1>
+        </div>
+
+        <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {newsArticles.map((article) => (
+            <Link key={article.slug} href={`/news/${article.slug}`} className="group flex flex-col border border-ink-900/12 bg-white">
+              <MediaFrame media={article.cover} className="aspect-[16/10]" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" />
+              <div className="flex flex-1 flex-col gap-2 p-6">
+                <p className="tick-label text-brass-600">{article.category}</p>
+                <h2 className="font-display text-lg font-semibold text-ink-900 group-hover:text-teal-600">{article.title}</h2>
+                <p className="text-sm text-ink-700">{article.excerpt}</p>
+                <p className="mt-auto pt-3 text-xs text-ink-600">{formatDate(article.publishedAt)}</p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </Container>

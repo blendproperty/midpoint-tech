@@ -1,38 +1,32 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Download, FileText } from "lucide-react";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Badge } from "@/components/ui/badge";
-import { Gallery } from "@/components/ui/gallery";
-import { SpecTable } from "@/components/spaces/spec-table";
-import { StickyEnquiry } from "@/components/spaces/sticky-enquiry";
-import { SpaceCard } from "@/components/spaces/space-card";
-import { spaces, getSpaceBySlug, getRelatedSpaces } from "@/lib/content/spaces";
-import { formatSize } from "@/lib/utils";
-import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
-import { siteConfig } from "@/lib/content/site";
+import { Download, MapPin } from "lucide-react";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { StatusBadge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { MediaFrame } from "@/components/ui/MediaFrame";
+import { Gallery } from "@/components/ui/Gallery";
+import { spaces, getSpaceBySlug, getRelatedSpaces } from "@/content/spaces";
+import { site } from "@/content/site";
+import { formatSqm, formatDate, absoluteUrl } from "@/lib/utils";
 
 export function generateStaticParams() {
-  return spaces.map((space) => ({ slug: space.slug }));
+  return spaces.map((s) => ({ slug: s.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const space = getSpaceBySlug(slug);
   if (!space) return {};
-  return buildMetadata({
-    title: `${space.name} — ${formatSize(space.sizeSqm)} in Midrand`,
+  return {
+    title: `${space.name}, ${space.buildingReference}`,
     description: space.summary,
-    path: `/spaces/${space.slug}`,
-  });
+    alternates: { canonical: `/spaces/${space.slug}` },
+    openGraph: { title: space.name, description: space.summary, url: absoluteUrl(`/spaces/${space.slug}`) },
+  };
 }
 
 export default async function SpaceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -41,118 +35,150 @@ export default async function SpaceDetailPage({ params }: { params: Promise<{ sl
   if (!space) notFound();
 
   const related = getRelatedSpaces(space);
-  const breadcrumbItems = [
-    { name: "Home", path: "/" },
-    { name: "Spaces", path: "/spaces" },
-    { name: space.name, path: `/spaces/${space.slug}` },
-  ];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${space.name}, ${space.buildingReference}`,
+    description: space.summary,
+    offers: { "@type": "Offer", availability: space.status === "available" ? "https://schema.org/InStock" : "https://schema.org/PreOrder", priceCurrency: "ZAR" },
+  };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(breadcrumbItems)) }}
-      />
-      <Section className="pt-32">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Section tone="stone" className="pb-0 pt-10">
         <Container>
-          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Spaces", href: "/spaces" }, { label: space.name }]} />
+          <Breadcrumbs
+            items={[{ label: "Home", href: "/" }, { label: "Spaces", href: "/spaces" }, { label: space.name }]}
+          />
+        </Container>
+      </Section>
 
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            <Badge tone={space.status} />
-            <Badge tone="sample" />
-          </div>
+      <Section tone="stone" className="pt-6">
+        <Container className="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
+          <div>
+            <Gallery media={space.gallery} name={space.name} />
 
-          <Heading as="h1" className="mt-3">
-            {space.name}
-          </Heading>
-          <p className="mt-2 text-[var(--color-ink-soft)]">
-            {space.buildingReference} · {siteConfig.address.line1}, {siteConfig.address.city}
-          </p>
-
-          <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-            <div className="space-y-10">
-              <Gallery images={space.images} itemName={space.name} />
-
+            <div className="mt-10 flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h2 className="font-[var(--font-display)] text-xl font-medium">About this space</h2>
-                <p className="mt-3 max-w-2xl text-[var(--color-ink-soft)]">{space.description}</p>
+                <StatusBadge status={space.status} />
+                <h1 className="mt-3 text-step-3 font-display font-semibold text-ink-900">
+                  {space.name} <span className="text-ink-600">— {space.buildingReference}</span>
+                </h1>
               </div>
+              <div className="text-right">
+                <p className="text-sm text-ink-600">GLA</p>
+                <p className="font-display text-2xl font-semibold text-ink-900">{formatSqm(space.glaSqm)}</p>
+              </div>
+            </div>
 
+            <p className="mt-6 max-w-2xl text-lg text-ink-700">{space.summary}</p>
+
+            <div className="mt-10 grid gap-8 sm:grid-cols-2">
               <div>
-                <h2 className="font-[var(--font-display)] text-xl font-medium">Highlights</h2>
-                <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                <h2 className="tick-label text-ink-700">Highlights</h2>
+                <ul className="mt-3 space-y-2">
                   {space.highlights.map((h) => (
-                    <li key={h} className="flex items-start gap-2 text-sm text-[var(--color-ink-soft)]">
-                      <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-[var(--color-signal)]" aria-hidden="true" />
+                    <li key={h} className="flex gap-3 text-ink-800">
+                      <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brass-500" />
                       {h}
                     </li>
                   ))}
                 </ul>
               </div>
-
               <div>
-                <h2 className="font-[var(--font-display)] text-xl font-medium">Key facts</h2>
-                <div className="mt-3">
-                  <SpecTable
-                    specs={[
-                      { label: "Gross lettable area", value: formatSize(space.sizeSqm) },
-                      { label: "Floor", value: space.floor ?? "On request" },
-                      { label: "Rental", value: space.rentalDisplay === "approved" ? `${space.rentalPerSqm} / m²` : "On request" },
-                      { label: "Available from", value: space.availableFrom },
-                      { label: "Parking bays", value: space.parkingBays !== undefined ? String(space.parkingBays) : "On request" },
-                      ...space.specifications,
-                    ]}
-                  />
-                </div>
+                <h2 className="tick-label text-ink-700">Key facts</h2>
+                <dl className="mt-3 space-y-2 text-sm">
+                  <Fact label="Availability date" value={formatDate(space.availableFrom)} />
+                  <Fact label="Rental" value="On request" />
+                  <Fact label="Parking bays" value={space.parkingBays ? String(space.parkingBays) : "Confirm with leasing team"} />
+                </dl>
               </div>
+            </div>
 
-              {space.floorPlan && (
-                <div>
-                  <h2 className="font-[var(--font-display)] text-xl font-medium">Floor plan</h2>
-                  <div className="mt-3 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-line)]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={space.floorPlan.src} alt={space.floorPlan.alt} className="w-full" />
+            <div className="mt-12">
+              <h2 className="tick-label text-ink-700">Specification</h2>
+              <dl className="mt-4 divide-y divide-ink-900/10 border-t border-ink-900/10">
+                {space.specification.map((row) => (
+                  <div key={row.label} className="grid grid-cols-[160px_1fr] gap-4 py-3 text-sm">
+                    <dt className="text-ink-600">{row.label}</dt>
+                    <dd className="text-ink-900">{row.value}</dd>
                   </div>
-                  <p className="mt-2 text-xs text-[var(--color-ink-soft)]">{space.floorPlan.alt}</p>
-                </div>
-              )}
+                ))}
+              </dl>
+            </div>
 
-              <div className="rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-paper-dim)] p-6">
-                <div className="flex items-center gap-3">
-                  <FileText className="size-5 text-[var(--color-ink-soft)]" aria-hidden="true" />
-                  <p className="text-sm">
-                    {space.brochureUrl
-                      ? "Download the brochure for full specifications."
-                      : "A downloadable brochure for this space is not yet available. Contact the leasing team for full specifications."}
-                  </p>
+            {space.floorPlan && (
+              <div className="mt-12">
+                <div className="flex items-center justify-between">
+                  <h2 className="tick-label text-ink-700">Floor plan</h2>
+                  <span className="text-xs text-ink-600">Sample plan — replace before launch</span>
                 </div>
-                {space.brochureUrl && (
-                  <Link href={space.brochureUrl} className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-signal-strong)] hover:underline">
-                    <Download className="size-4" aria-hidden="true" /> Download brochure
-                  </Link>
+                <MediaFrame media={space.floorPlan} className="mt-4 aspect-[4/3] max-w-xl border border-ink-900/10" />
+              </div>
+            )}
+
+            <div className="mt-12 flex items-center gap-2 text-sm text-ink-700">
+              <MapPin className="h-4 w-4 text-brass-600" />
+              <Link href="/location" className="hover:text-teal-500 hover:underline underline-offset-4">
+                {site.address.line1}, {site.address.city}
+              </Link>
+            </div>
+          </div>
+
+          <aside className="lg:sticky lg:top-28 lg:self-start">
+            <div className="border border-ink-900/12 bg-white p-6">
+              <p className="font-display text-lg font-semibold text-ink-900">Interested in this space?</p>
+              <p className="mt-2 text-sm text-ink-700">Book a tour or send an enquiry and the leasing team will follow up directly.</p>
+              <div className="mt-5 flex flex-col gap-3">
+                <Button href={`/contact?journey=tour&space=${space.slug}`} variant="primary" className="justify-center">
+                  Book a tour
+                </Button>
+                <Button href={`/contact?journey=leasing&space=${space.slug}`} variant="secondary" className="justify-center">
+                  Enquire about leasing
+                </Button>
+                {space.brochureUrl ? (
+                  <Button href={space.brochureUrl} variant="ghost" className="justify-center">
+                    <Download className="h-4 w-4" /> Download brochure
+                  </Button>
+                ) : (
+                  <p className="text-center text-xs text-ink-600">Brochure available on request</p>
                 )}
               </div>
             </div>
-
-            <div>
-              <StickyEnquiry spaceName={space.name} />
-            </div>
-          </div>
+          </aside>
         </Container>
       </Section>
 
       {related.length > 0 && (
-        <Section className="border-t border-[var(--color-line)] bg-[var(--color-paper-dim)]">
+        <Section tone="raised">
           <Container>
-            <Heading as="h2">Related spaces</Heading>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((s) => (
-                <SpaceCard key={s.slug} space={s} />
+            <h2 className="text-step-2 font-display font-semibold text-ink-900">Related spaces</h2>
+            <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((r) => (
+                <Link key={r.slug} href={`/spaces/${r.slug}`} className="group flex flex-col border border-ink-900/12">
+                  <MediaFrame media={r.gallery[0]} className="aspect-[4/3]" sizes="(min-width:1024px) 33vw, 100vw" />
+                  <div className="p-5">
+                    <StatusBadge status={r.status} />
+                    <p className="mt-2 font-display font-semibold text-ink-900 group-hover:text-teal-600">{r.name}</p>
+                    <p className="text-sm text-ink-700">{formatSqm(r.glaSqm)} · {r.buildingReference}</p>
+                  </div>
+                </Link>
               ))}
             </div>
           </Container>
         </Section>
       )}
     </>
+  );
+}
+
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex justify-between border-b border-ink-900/10 pb-2">
+      <dt className="text-ink-600">{label}</dt>
+      <dd className="font-medium text-ink-900">{value}</dd>
+    </div>
   );
 }

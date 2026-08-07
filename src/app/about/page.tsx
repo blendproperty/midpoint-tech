@@ -1,73 +1,79 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { Reveal } from "@/components/motion/reveal";
-import { Button } from "@/components/ui/button";
-import { buildMetadata } from "@/lib/seo";
-import { siteConfig } from "@/lib/content/site";
+import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { MediaFrame } from "@/components/ui/MediaFrame";
+import { Button } from "@/components/ui/Button";
+import { site } from "@/content/site";
 
-export const metadata: Metadata = buildMetadata({
+export const metadata: Metadata = {
   title: "About Midpoint Tech",
-  description:
-    "Midpoint Tech is a technology-focused destination within the Midpoint portfolio, developed by Blend Property Group at 300 Janadel Avenue, Midrand.",
-  path: "/about",
-});
+  description: "Midpoint Tech is a distinct technology-focused environment within the wider Midpoint commercial portfolio, at 300 Janadel Avenue, Midrand.",
+  alternates: { canonical: "/about" },
+};
 
 export default function AboutPage() {
   return (
     <>
-      <Section className="pt-32">
+      <Section tone="stone" className="pt-14 pb-10">
         <Container>
-          <Heading as="h1" eyebrow="About Midpoint Tech">
-            A technology-focused chapter within the Midpoint story
-          </Heading>
-          <p className="mt-6 max-w-2xl text-lg text-[var(--color-ink-soft)]">
-            Midpoint Tech brings ambitious businesses together in a professional environment created for focus,
-            connection and growth. Located at {siteConfig.address.line1} in Midrand, it gives technology teams a
-            credible base from which to build, collaborate and move forward.
-          </p>
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "About" }]} />
+          <div className="mt-8 max-w-2xl">
+            <Eyebrow>About</Eyebrow>
+            <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">
+              A technology-focused environment within the Midpoint portfolio.
+            </h1>
+            <p className="mt-4 text-lg text-ink-700">
+              Midpoint Tech brings ambitious businesses together in a professional environment created for
+              focus, connection and growth, at 300 Janadel Avenue in Midrand.
+            </p>
+          </div>
         </Container>
       </Section>
 
-      <Section className="border-t border-[var(--color-line)]">
-        <Container className="grid gap-12 md:grid-cols-2">
-          <Reveal>
-            <h2 className="font-[var(--font-display)] text-2xl font-medium">Why a technology-focused destination</h2>
-            <p className="mt-4 text-[var(--color-ink-soft)]">
-              Technology businesses — software companies, fintechs, engineering teams, managed service providers and
-              corporate innovation units — have different needs to a conventional office tenant. Midpoint Tech is
-              being shaped specifically around those needs: flexible space that can scale, an environment that
-              supports focused work and informal connection, and a location that works for staff, clients and
-              partners across the wider Gauteng business corridor.
+      <Section tone="raised">
+        <Container className="grid gap-12 md:grid-cols-2 md:items-center">
+          <MediaFrame
+            media={{ src: "/media/about/placeholder-about-1.svg", alt: "Placeholder image representing the Midpoint Tech campus" }}
+            className="aspect-[4/5]"
+          />
+          <div>
+            <h2 className="text-step-2 font-display font-semibold text-ink-900">Part of a larger commercial estate</h2>
+            <p className="mt-4 text-ink-700">
+              Midpoint Tech sits within the broader {site.parentBrand} commercial portfolio, which includes offices,
+              serviced offices and warehousing elsewhere on the estate. Midpoint Tech itself, at 300 Janadel
+              Avenue, is a distinct proposition focused specifically on technology, engineering and fintech
+              businesses — it does not include warehouse facilities.
             </p>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h2 className="font-[var(--font-display)] text-2xl font-medium">Part of the Midpoint portfolio</h2>
-            <p className="mt-4 text-[var(--color-ink-soft)]">
-              Midpoint Tech is a distinct destination within the broader Midpoint commercial property portfolio,
-              developed by Blend Property Group. It is a separate proposition from Midpoint&apos;s existing offices,
-              serviced offices and warehousing at its Tonetti Street estate — Midpoint Tech is purpose-shaped around
-              technology businesses at {siteConfig.address.line1}.
+            <p className="mt-4 text-ink-700">
+              The positioning balances two ideas: a credible commercial property and professional business
+              address, and a technology-oriented environment where companies can connect and grow.
             </p>
-            <Button href={siteConfig.parentBrand.url} variant="ghost" className="mt-3">
-              Visit the Midpoint portfolio site ↗
-            </Button>
-          </Reveal>
+            <div className="mt-8">
+              <Button href={site.parentBrandUrl} variant="secondary">Visit the Midpoint website</Button>
+            </div>
+          </div>
         </Container>
       </Section>
 
-      <Section className="border-t border-[var(--color-line)] bg-[var(--color-paper-dim)]">
+      <Section tone="ink">
         <Container>
-          <h2 className="font-[var(--font-display)] text-2xl font-medium">What we&apos;re building toward</h2>
-          <p className="mt-4 max-w-2xl text-[var(--color-ink-soft)]">
-            Midpoint Tech is being developed in phases. Specification details, amenities, sustainability credentials
-            and the community programme will be published here as they are confirmed — this site is built so that
-            content can be added without misrepresenting what exists today. See our{" "}
-            <a href="/community" className="underline">community page</a> for how we intend to support connection
-            between tenants, and our <a href="/experience" className="underline">experience page</a> for the
-            workplace environment.
-          </p>
+          <h2 className="max-w-xl text-step-3 font-display font-semibold text-stone-100">
+            Progressive. Established. Human.
+          </h2>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {[
+              { title: "Progressive, not pretentious", body: "Premium without excess — an environment that feels considered rather than performative." },
+              { title: "Established, not corporate-cold", body: "Credible enough for large technology organisations, welcoming enough for a first-time founder." },
+              { title: "Human, not generic", body: "Built around how technology teams actually work, meet clients and grow." },
+            ].map((v) => (
+              <div key={v.title} className="border-t border-stone-100/15 pt-6">
+                <h3 className="font-display text-lg font-semibold text-stone-100">{v.title}</h3>
+                <p className="mt-2 text-stone-300">{v.body}</p>
+              </div>
+            ))}
+          </div>
         </Container>
       </Section>
     </>

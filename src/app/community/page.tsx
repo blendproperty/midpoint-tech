@@ -1,82 +1,64 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { Reveal } from "@/components/motion/reveal";
-import { Button } from "@/components/ui/button";
-import { tenantCategories } from "@/lib/content/testimonials";
-import { buildMetadata } from "@/lib/seo";
+import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { MediaFrame } from "@/components/ui/MediaFrame";
 
-export const metadata: Metadata = buildMetadata({
+export const metadata: Metadata = {
   title: "Community",
-  description:
-    "Midpoint Tech is designed to support connection between ambitious technology businesses in Midrand.",
-  path: "/community",
-});
-
-const structureCards = [
-  {
-    title: "Shared spaces designed for connection",
-    body: "Common areas and breakout spaces are planned to make informal interaction between tenants possible, without engineering forced networking.",
-  },
-  {
-    title: "A technology-oriented tenant mix",
-    body: "Leasing is being shaped around software, fintech, engineering and digital service businesses, so the surrounding community shares common context.",
-  },
-  {
-    title: "Room for a future programme",
-    body: "The site is structured so that tenant stories, talks, workshops and partnerships can be added here once they are confirmed — nothing is claimed before it exists.",
-  },
-];
+  description: "Midpoint Tech is designed to support connection between ambitious technology businesses in Midrand.",
+  alternates: { canonical: "/community" },
+};
 
 export default function CommunityPage() {
   return (
     <>
-      <Section className="pt-32">
+      <Section tone="stone" className="pt-14 pb-10">
         <Container>
-          <Heading as="h1" eyebrow="Community">
-            Designed to support connection between ambitious businesses
-          </Heading>
-          <p className="mt-6 max-w-2xl text-lg text-[var(--color-ink-soft)]">
-            Midpoint Tech&apos;s community proposition is intentionally honest about where things stand today. We are
-            not yet able to point to a formal accelerator, funding programme or scheduled events calendar — this page
-            will be expanded as those elements are confirmed.
-          </p>
-        </Container>
-      </Section>
-
-      <Section className="border-t border-[var(--color-line)]">
-        <Container className="grid gap-8 md:grid-cols-3">
-          {structureCards.map((card, i) => (
-            <Reveal key={card.title} delay={i * 0.06}>
-              <div className="h-full rounded-[var(--radius-lg)] border border-[var(--color-line)] p-6">
-                <h2 className="font-[var(--font-display)] text-lg font-medium">{card.title}</h2>
-                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{card.body}</p>
-              </div>
-            </Reveal>
-          ))}
-        </Container>
-      </Section>
-
-      <Section className="border-t border-[var(--color-line)] bg-[var(--color-paper-dim)]">
-        <Container>
-          <h2 className="font-[var(--font-display)] text-xl font-medium">Who the community is for</h2>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {tenantCategories.map((category) => (
-              <span key={category} className="rounded-full border border-[var(--color-line)] bg-white px-4 py-2 text-sm">
-                {category}
-              </span>
-            ))}
-          </div>
-          <p className="mt-8 max-w-2xl text-sm text-[var(--color-ink-soft)]">
-            No formal incubator, funding access, university partnership or investor programme is currently confirmed
-            at Midpoint Tech. Any such initiative will be described here accurately, once agreed and operational.
-          </p>
-          <div className="mt-8">
-            <Button href="/contact">Talk to us about the community</Button>
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Community" }]} />
+          <div className="mt-8 max-w-2xl">
+            <Eyebrow>Community</Eyebrow>
+            <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">
+              Designed to support connection between ambitious businesses.
+            </h1>
+            <p className="mt-4 text-lg text-ink-700">
+              Midpoint Tech brings technology, engineering and fintech companies into a shared environment.
+              We do not claim a formal accelerator, incubator or guaranteed funding access — the structure
+              below is built so real programmes can be activated here as they are confirmed.
+            </p>
           </div>
         </Container>
       </Section>
+
+      <Section tone="raised">
+        <Container className="grid gap-12 md:grid-cols-2 md:items-center">
+          <div>
+            <h2 className="text-step-2 font-display font-semibold text-ink-900">A shared technology environment</h2>
+            <p className="mt-4 text-ink-700">
+              Tenants at Midpoint Tech share buildings, common areas and a professional address with other
+              technology-focused businesses — creating natural opportunities for connection without any
+              guarantee of formal collaboration.
+            </p>
+          </div>
+          <MediaFrame media={{ src: "/media/community/placeholder-community-1.svg", alt: "Placeholder image representing the Midpoint Tech community" }} className="aspect-[4/3]" />
+        </Container>
+      </Section>
+
+      {(["Member stories", "Events and talks", "Partnerships"] as const).map((title) => (
+        <Section key={title} tone="stone">
+          <Container>
+            <h2 className="text-step-2 font-display font-semibold text-ink-900">{title}</h2>
+            <div className="mt-8">
+              <EmptyState
+                title={`${title} are coming soon`}
+                description="This section is structured and ready to publish — content will appear here once confirmed by the Midpoint Tech team."
+              />
+            </div>
+          </Container>
+        </Section>
+      ))}
     </>
   );
 }

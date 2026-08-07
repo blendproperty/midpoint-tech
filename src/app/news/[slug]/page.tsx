@@ -1,58 +1,60 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { MediaFrame } from "@/components/ui/media-frame";
-import { RichText } from "@/components/ui/rich-text";
-import { articles, getArticleBySlug } from "@/lib/content/news";
-import { formatDate } from "@/lib/utils";
-import { buildMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { MediaFrame } from "@/components/ui/MediaFrame";
+import { newsArticles, getArticleBySlug } from "@/content/news";
+import { formatDate, absoluteUrl } from "@/lib/utils";
 
 export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }));
+  return newsArticles.map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
   if (!article) return {};
-  return buildMetadata({ title: article.title, description: article.excerpt, path: `/news/${article.slug}` });
+  return {
+    title: article.title,
+    description: article.excerpt,
+    alternates: { canonical: `/news/${article.slug}` },
+    openGraph: { title: article.title, description: article.excerpt, url: absoluteUrl(`/news/${article.slug}`), type: "article" },
+  };
 }
 
-export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    datePublished: article.publishedAt,
+    description: article.excerpt,
+  };
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            articleJsonLd({ title: article.title, description: article.excerpt, path: `/news/${article.slug}`, publishedAt: article.publishedAt, image: article.coverImage.src }),
-            breadcrumbJsonLd([
-              { name: "Home", path: "/" },
-              { name: "News", path: "/news" },
-              { name: article.title, path: `/news/${article.slug}` },
-            ]),
-          ]),
-        }}
-      />
-      <Section className="pt-32">
-        <Container className="max-w-3xl">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Section tone="stone" className="pt-14 pb-8">
+        <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "News", href: "/news" }, { label: article.title }]} />
-          <p className="mt-6 text-xs text-[var(--color-ink-soft)]">
-            <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
-          </p>
-          <Heading as="h1" className="mt-2">{article.title}</Heading>
-          <div className="mt-8">
-            <MediaFrame src={article.coverImage.src} alt={article.coverImage.alt} width={1200} height={750} className="aspect-[16/10]" sizes="(min-width:768px) 768px, 100vw" priority />
+          <div className="mt-8 max-w-2xl">
+            <p className="tick-label text-brass-600">{article.category} · {formatDate(article.publishedAt)}</p>
+            <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">{article.title}</h1>
           </div>
-          <div className="mt-8">
-            <RichText paragraphs={article.body} />
+        </Container>
+      </Section>
+      <Section tone="raised" className="pt-0">
+        <Container>
+          <MediaFrame media={article.cover} className="aspect-[16/9] max-w-4xl" priority />
+          <div className="mt-10 max-w-2xl space-y-5 text-lg text-ink-800">
+            {article.body.map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
           </div>
         </Container>
       </Section>

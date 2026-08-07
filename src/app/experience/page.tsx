@@ -1,86 +1,63 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { MediaFrame } from "@/components/ui/media-frame";
-import { Reveal } from "@/components/motion/reveal";
-import { Button } from "@/components/ui/button";
-import { buildMetadata } from "@/lib/seo";
+import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { MediaFrame } from "@/components/ui/MediaFrame";
+import { Button } from "@/components/ui/Button";
 
-export const metadata: Metadata = buildMetadata({
+export const metadata: Metadata = {
   title: "The Midpoint Tech experience",
-  description:
-    "Explore the workplace environment at Midpoint Tech — arrival, shared spaces, landscape and the day-to-day experience of working at 300 Janadel Avenue.",
-  path: "/experience",
-});
+  description: "Workspace quality, shared environments and the day-to-day experience of Midpoint Tech in Midrand.",
+  alternates: { canonical: "/experience" },
+};
 
 const moments = [
-  {
-    title: "Arrival",
-    body: "A considered arrival experience designed to feel professional for staff and visiting clients alike, from the moment you enter the estate.",
-    image: { src: "/images/campus/placeholder-arrival.svg", alt: "Placeholder image representing the arrival experience at Midpoint Tech" },
-  },
-  {
-    title: "Workspace",
-    body: "Suites configured to suit technology teams — from focused, cellular work areas to open-plan floors that support collaboration.",
-    image: { src: "/images/campus/placeholder-workspace.svg", alt: "Placeholder image representing a workspace environment at Midpoint Tech" },
-  },
-  {
-    title: "Shared spaces",
-    body: "Shared meeting and breakout areas designed to make informal interaction between teams possible, without forcing it.",
-    image: { src: "/images/campus/placeholder-shared.svg", alt: "Placeholder image representing shared collaboration space at Midpoint Tech" },
-  },
-  {
-    title: "Landscape & grounds",
-    body: "Considered landscaping around the estate, contributing to a calmer day-to-day environment than a typical office park.",
-    image: { src: "/images/campus/placeholder-landscape.svg", alt: "Placeholder image representing the landscaped grounds at Midpoint Tech" },
-  },
-  {
-    title: "Meeting clients",
-    body: "Spaces suited to hosting clients, partners and investors, supporting a credible, professional impression.",
-    image: { src: "/images/campus/placeholder-meeting.svg", alt: "Placeholder image representing a meeting and client space at Midpoint Tech" },
-  },
+  { title: "Arrival", body: "A considered lobby and entrance sequence that sets the tone before a single meeting starts.", img: "placeholder-experience-4" },
+  { title: "Focus", body: "Fitted and shell-and-core suites configured for deep work as much as for client meetings.", img: "placeholder-experience-1" },
+  { title: "Collaboration", body: "Shared spaces for meeting, informal conversation and cross-team collaboration.", img: "placeholder-experience-2" },
+  { title: "Landscape", body: "Landscaped grounds between buildings — a deliberate break from the desk.", img: "placeholder-experience-3" },
 ];
 
 export default function ExperiencePage() {
   return (
     <>
-      <Section className="pt-32">
+      <Section tone="stone" className="pt-14 pb-10">
         <Container>
-          <Heading as="h1" eyebrow="The environment">
-            A workplace experience, not just office space
-          </Heading>
-          <p className="mt-6 max-w-2xl text-lg text-[var(--color-ink-soft)]">
-            Midpoint Tech is being shaped around the day-to-day experience of working there — how you arrive, how
-            your team collaborates, and how you meet clients. Specific amenities will be confirmed and published here
-            as the estate develops.
-          </p>
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Experience" }]} />
+          <div className="mt-8 max-w-2xl">
+            <Eyebrow>Experience</Eyebrow>
+            <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">
+              A workplace built for focus and for people.
+            </h1>
+            <p className="mt-4 text-lg text-ink-700">
+              From arrival to collaboration, Midpoint Tech is shaped around how technology teams actually
+              spend their day. Specific amenities will be confirmed and added here as they are finalised.
+            </p>
+          </div>
         </Container>
       </Section>
 
-      <Section className="border-t border-[var(--color-line)]">
-        <Container className="space-y-16">
-          {moments.map((moment, i) => (
-            <Reveal key={moment.title}>
-              <div className={`grid gap-8 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}>
-                <MediaFrame src={moment.image.src} alt={moment.image.alt} width={800} height={600} className="aspect-[4/3]" sizes="(min-width:768px) 560px, 100vw" />
-                <div>
-                  <h2 className="font-[var(--font-display)] text-2xl font-medium">{moment.title}</h2>
-                  <p className="mt-3 max-w-md text-[var(--color-ink-soft)]">{moment.body}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </Container>
-      </Section>
+      {moments.map((m, i) => (
+        <Section key={m.title} tone={i % 2 === 0 ? "raised" : "stone"}>
+          <Container className={`grid gap-12 md:grid-cols-2 md:items-center ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}>
+            <MediaFrame media={{ src: `/media/experience/${m.img}.svg`, alt: `Placeholder image illustrating the ${m.title.toLowerCase()} moment at Midpoint Tech` }} className="aspect-[4/3]" />
+            <div>
+              <p className="tick-label text-brass-600">0{i + 1} — {m.title}</p>
+              <h2 className="mt-3 text-step-2 font-display font-semibold text-ink-900">{m.title}</h2>
+              <p className="mt-4 text-ink-700">{m.body}</p>
+            </div>
+          </Container>
+        </Section>
+      ))}
 
-      <Section dark className="text-center">
+      <Section tone="ink" className="text-center">
         <Container>
-          <Heading as="h2" className="mx-auto max-w-xl text-[var(--color-paper)]">
-            See it for yourself
-          </Heading>
-          <div className="mt-8">
-            <Button href="/contact?intent=tour" size="lg">Book a tour</Button>
+          <h2 className="mx-auto max-w-xl text-step-3 font-display font-semibold text-stone-100">
+            See it for yourself.
+          </h2>
+          <div className="mt-8 flex justify-center">
+            <Button href="/contact?journey=tour" variant="primary">Book a tour</Button>
           </div>
         </Container>
       </Section>

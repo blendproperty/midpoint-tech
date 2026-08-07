@@ -1,35 +1,21 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { RichText } from "@/components/ui/rich-text";
-import { buildMetadata } from "@/lib/seo";
+import { LegalDoc } from "@/components/ui/LegalDoc";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Website terms",
-  description: "Terms of use for the Midpoint Tech website.",
-  path: "/terms",
-});
+export const metadata: Metadata = { title: "Terms of use", alternates: { canonical: "/terms" } };
 
 export default function TermsPage() {
   return (
-    <Section className="pt-32">
-      <Container className="max-w-3xl">
-        <Heading as="h1">Website terms</Heading>
-        <p className="mt-4 text-sm text-[var(--color-ink-soft)]">
-          Draft placeholder — pending legal review before public launch.
-        </p>
-        <div className="mt-8">
-          <RichText
-            paragraphs={[
-              "These terms govern your use of the Midpoint Tech website. By using this site, you agree to these terms.",
-              "Content on this website — including images, floor plans and specifications marked as sample data — is illustrative and may not reflect the final, confirmed condition of the property. Availability, pricing and specification are subject to change and confirmation by the leasing team.",
-              "Images marked as placeholders are for illustrative purposes only and do not depict the actual property. Real photography will replace these images as it becomes available.",
-              "This website and its content are provided by Blend Property Group in connection with the Midpoint Tech development at 300 Janadel Avenue, Midrand. All rights reserved.",
-            ]}
-          />
-        </div>
-      </Container>
-    </Section>
+    <LegalDoc title="Terms of use" updated="Draft — pending legal review">
+      <p>
+        This is a placeholder terms-of-use document prepared for development purposes and must be reviewed
+        by a qualified legal advisor before public launch.
+      </p>
+      <h2>Use of this website</h2>
+      <p>This website provides information about Midpoint Tech, a commercial property at 300 Janadel Avenue, Halfway House, Midrand. Content is provided for general information and does not constitute a legally binding offer to lease.</p>
+      <h2>Property information</h2>
+      <p>Space availability, sizes, rentals and specifications are subject to change and confirmation. Figures marked as sample data are illustrative only.</p>
+      <h2>Intellectual property</h2>
+      <p>All content on this site remains the property of Midpoint / Midpoint Tech unless otherwise stated.</p>
+    </LegalDoc>
   );
 }

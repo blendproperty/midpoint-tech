@@ -1,81 +1,103 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { Heading } from "@/components/ui/heading";
-import { MapPanel } from "@/components/location/map-panel";
-import { CopyAddressButton } from "@/components/location/copy-address-button";
-import { Button } from "@/components/ui/button";
-import { buildMetadata, placeJsonLd } from "@/lib/seo";
-import { siteConfig } from "@/lib/content/site";
+import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Section } from "@/components/ui/Section";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { Button } from "@/components/ui/Button";
+import { LocationPanel } from "@/components/sections/LocationPanel";
+import { AddressCopyButton } from "@/components/sections/AddressCopyButton";
+import { site } from "@/content/site";
+import { absoluteUrl } from "@/lib/utils";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Location — Midrand, between Johannesburg and Pretoria",
-  description:
-    "Midpoint Tech is located at 300 Janadel Avenue, Halfway House, Midrand — part of the Johannesburg–Pretoria business corridor.",
-  path: "/location",
-});
+export const metadata: Metadata = {
+  title: "Location — 300 Janadel Avenue, Midrand",
+  description: "Midpoint Tech is located at 300 Janadel Avenue, Halfway House, Midrand — on the business corridor between Johannesburg and Pretoria.",
+  alternates: { canonical: "/location" },
+};
 
-const nearbyCategories = [
-  "Corporate and financial services offices",
-  "Established logistics and distribution operations",
-  "Retail and convenience amenities",
-  "Other commercial and industrial business parks",
-];
+const placeJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Place",
+  name: site.name,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.address.line1,
+    addressLocality: site.address.city,
+    addressRegion: site.address.province,
+    postalCode: site.address.postalCode,
+    addressCountry: "ZA",
+  },
+  geo: { "@type": "GeoCoordinates", latitude: site.address.lat, longitude: site.address.lng },
+  url: absoluteUrl("/location"),
+};
 
 export default function LocationPage() {
-  const address = `${siteConfig.address.line1}, ${siteConfig.address.line2}, ${siteConfig.address.city}, ${siteConfig.address.region}, ${siteConfig.address.postalCode}`;
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd()) }}
-      />
-      <Section className="pt-32">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd) }} />
+      <Section tone="stone" className="pt-14 pb-10">
         <Container>
-          <Heading as="h1" eyebrow="Location">
-            At the centre of Midrand&apos;s business corridor
-          </Heading>
-          <p className="mt-6 max-w-2xl text-lg text-[var(--color-ink-soft)]">
-            Midpoint Tech is located in Halfway House, Midrand — part of the same active commercial corridor that
-            connects Johannesburg and Pretoria. This gives technology teams practical access for staff, clients and
-            partners across Gauteng.
-          </p>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <CopyAddressButton address={address} />
-            <Button href="/contact" variant="ghost">Ask about commute options</Button>
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Location" }]} />
+          <div className="mt-8 max-w-2xl">
+            <Eyebrow>Location</Eyebrow>
+            <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">
+              On the corridor between Johannesburg and Pretoria.
+            </h1>
+            <p className="mt-4 text-lg text-ink-700">
+              300 Janadel Avenue sits in Halfway House, Midrand — a practical base for teams that need to
+              serve both metros. Exact travel times will be confirmed and added ahead of launch.
+            </p>
           </div>
         </Container>
       </Section>
 
-      <Section className="border-t border-[var(--color-line)]">
-        <Container className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-          <MapPanel />
+      <Section tone="raised">
+        <Container className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
           <div>
-            <h2 className="font-[var(--font-display)] text-xl font-medium">Road access</h2>
-            <p className="mt-3 text-[var(--color-ink-soft)]">
-              Midrand sits along the N1 highway corridor between Johannesburg and Pretoria, with surrounding arterial
-              routes serving the wider Halfway House business node. Specific drive-time and route detail for 300
-              Janadel Avenue will be confirmed and published here — see our outstanding content items in
-              docs/content-required.md for what is still pending verification.
-            </p>
+            <h2 className="tick-label text-ink-700">Address</h2>
+            <address className="mt-3 not-italic text-2xl font-display font-semibold text-ink-900">
+              {site.address.line1}
+              <br />
+              {site.address.line2}
+              <br />
+              {site.address.city}, {site.address.province}
+              <br />
+              {site.address.postalCode}, {site.address.country}
+            </address>
+            <p className="mt-2 text-xs text-ink-600">Coordinates shown are indicative sample data pending confirmation.</p>
 
-            <h2 className="mt-8 font-[var(--font-display)] text-xl font-medium">Public transport</h2>
-            <p className="mt-3 text-[var(--color-ink-soft)]">
-              Gautrain and public bus/taxi context for this specific address has not yet been confirmed. This section
-              will be updated with verified detail once available.
-            </p>
+            <div className="mt-6 flex flex-wrap gap-4">
+              <AddressCopyButton />
+              <Button
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                  `${site.address.line1}, ${site.address.city}, South Africa`
+                )}`}
+                variant="secondary"
+              >
+                Get directions
+              </Button>
+            </div>
 
-            <h2 className="mt-8 font-[var(--font-display)] text-xl font-medium">Nearby business context</h2>
-            <ul className="mt-3 space-y-2">
-              {nearbyCategories.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-sm text-[var(--color-ink-soft)]">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-[var(--color-signal)]" aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <div className="mt-10">
+              <h2 className="tick-label text-ink-700">Road access</h2>
+              <ul className="mt-3 space-y-2 text-ink-800">
+                <li className="flex gap-3"><span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brass-500" />Positioned within the Midrand business node</li>
+                <li className="flex gap-3"><span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brass-500" />Close to major routes connecting Johannesburg and Pretoria</li>
+                <li className="flex gap-3"><span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brass-500" />Public-transport access to be confirmed and added</li>
+              </ul>
+              <p className="mt-3 text-xs text-ink-600">Detailed road-access and transit information is pending verification — see docs/content-required.md.</p>
+            </div>
+
+            <div className="mt-10">
+              <h2 className="tick-label text-ink-700">Nearby business context</h2>
+              <p className="mt-3 text-ink-700">
+                Midrand hosts a mix of established corporates, logistics and technology businesses. Specific
+                nearby landmarks and business nodes will be added once confirmed.
+              </p>
+            </div>
           </div>
+
+          <LocationPanel />
         </Container>
       </Section>
     </>
