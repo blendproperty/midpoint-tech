@@ -27,7 +27,7 @@ export function ExperienceTeaser() {
           </div>
         </div>
         <MediaFrame
-          media={{ src: "/media/experience/placeholder-experience-1.svg", alt: "Placeholder image of the Midpoint Tech campus environment" }}
+          media={{ src: "https://images.unsplash.com/photo-1785308269647-e56d16b5eb85?auto=format&fit=crop&w=1600&q=80", alt: "Illustrative stock photo of a landscaped paved pathway between modern buildings" }}
           className="aspect-[4/5] md:aspect-[3/4]"
         />
       </Container>
