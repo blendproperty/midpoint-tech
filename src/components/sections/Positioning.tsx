@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { MeridianLine } from "@/components/ui/MeridianLine";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
 const themes = [
   {
@@ -25,7 +26,7 @@ export function Positioning() {
   return (
     <Section tone="raised">
       <Container>
-        <div className="max-w-2xl">
+        <Reveal className="max-w-2xl">
           <Eyebrow>The proposition</Eyebrow>
           <h2 className="mt-4 text-step-3 font-display font-semibold text-ink-900">
             More than an office address.
@@ -34,21 +35,24 @@ export function Positioning() {
             Midpoint Tech brings ambitious businesses together in a professional environment created for
             focus, connection and growth.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="mt-16 hidden md:block">
+        <Reveal delay={0.15} className="mt-16 hidden md:block">
           <MeridianLine nodes={themes.map((t) => t.node)} tone="stone" />
-        </div>
+        </Reveal>
 
-        <div className="mt-10 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-8">
+        <RevealGroup className="mt-10 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-8" stagger={0.12} delay={0.1}>
           {themes.map((theme) => (
-            <div key={theme.node} className="border-t border-ink-900/15 pt-6">
+            <RevealItem
+              key={theme.node}
+              className="border-t border-ink-900/15 pt-6 transition-transform duration-300 hover:-translate-y-1"
+            >
               <p className="tick-label text-brass-600">{theme.node}</p>
               <h3 className="mt-3 text-xl font-display font-semibold text-ink-900">{theme.title}</h3>
               <p className="mt-3 text-ink-700">{theme.body}</p>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </Container>
     </Section>
   );
