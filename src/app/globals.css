@@ -174,3 +174,42 @@ h1, h2, h3, h4, .font-display {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
+/* ============================================================
+   MOTION — bold/kinetic pass
+   ============================================================ */
+
+@keyframes grid-drift {
+  from { background-position: 0px 0px; }
+  to { background-position: 56px 56px; }
+}
+.animate-grid-drift {
+  animation: grid-drift 16s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -16px, 0); }
+}
+.animate-float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-grid-drift,
+  .animate-marquee,
+  .animate-float-slow {
+    animation: none !important;
+  }
+}
