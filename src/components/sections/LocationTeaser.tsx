@@ -8,6 +8,8 @@ import { site } from "@/content/site";
 import { campusAerialDataUri } from "@/content/campus-aerial";
 import { ArrowUpRight } from "lucide-react";
 
+const corridor = ["Pretoria", "Midpoint Tech", "Johannesburg"];
+
 export function LocationTeaser() {
   return (
     <Section tone="ink">
@@ -21,7 +23,29 @@ export function LocationTeaser() {
             300 Janadel Avenue sits in Halfway House, Midrand — practical for teams that need to serve both
             metros without committing to either.
           </p>
-          <address className="mt-6 not-italic text-stone-300">
+
+          {/* Corridor device — the geography as the interface, not a generic map embed */}
+          <ol className="mt-8 flex items-center gap-0 text-sm">
+            {corridor.map((place, i) => (
+              <li key={place} className="flex items-center">
+                {i > 0 && <span aria-hidden className="mx-3 h-px w-8 bg-stone-100/25 md:w-14" />}
+                <span
+                  className={
+                    place === "Midpoint Tech"
+                      ? "tick-label flex items-center gap-2 border border-brass-500/50 bg-brass-500/10 px-3 py-1.5 text-brass-300"
+                      : "tick-label text-stone-400"
+                  }
+                >
+                  {place === "Midpoint Tech" && (
+                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brass-400" />
+                  )}
+                  {place}
+                </span>
+              </li>
+            ))}
+          </ol>
+
+          <address className="mt-8 not-italic text-stone-300">
             {site.address.line1}, {site.address.line2}
             <br />
             {site.address.city}, {site.address.province}, {site.address.postalCode}

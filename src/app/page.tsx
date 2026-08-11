@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
+import { BrandStatement } from "@/components/sections/BrandStatement";
 import { Positioning } from "@/components/sections/Positioning";
+import { CampusExplorer } from "@/components/sections/CampusExplorer";
 import { AvailabilityPreview } from "@/components/sections/AvailabilityPreview";
 import { Ecosystem } from "@/components/sections/Ecosystem";
 import { ExperienceTeaser } from "@/components/sections/ExperienceTeaser";
@@ -19,7 +21,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <BrandStatement />
       <Positioning />
+      <CampusExplorer />
       <AvailabilityPreview />
       <Ecosystem />
       <ExperienceTeaser />
