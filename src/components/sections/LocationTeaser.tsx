@@ -25,19 +25,19 @@ export function LocationTeaser() {
           </p>
 
           {/* Corridor device — the geography as the interface, not a generic map embed */}
-          <ol className="mt-8 flex items-center gap-0 text-sm">
+          <ol className="mt-8 flex flex-wrap items-center gap-y-3 text-sm">
             {corridor.map((place, i) => (
               <li key={place} className="flex items-center">
                 {i > 0 && <span aria-hidden className="mx-3 h-px w-8 bg-stone-100/25 md:w-14" />}
                 <span
                   className={
                     place === "Midpoint Tech"
-                      ? "tick-label flex items-center gap-2 border border-brass-500/50 bg-brass-500/10 px-3 py-1.5 text-brass-300"
+                      ? "tick-label flex items-center gap-2 bg-brass-500 px-3 py-1.5 text-ink-950"
                       : "tick-label text-stone-400"
                   }
                 >
                   {place === "Midpoint Tech" && (
-                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brass-400" />
+                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-ink-950" />
                   )}
                   {place}
                 </span>

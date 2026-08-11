@@ -60,17 +60,16 @@ export default async function SpaceDetailPage({ params }: { params: Promise<{ sl
           <div>
             <Gallery media={space.gallery} name={space.name} />
 
-            <div className="mt-10 flex flex-wrap items-start justify-between gap-4">
-              <div>
+            <div className="mt-10">
+              <p className="tick-label text-ink-600">{space.buildingReference} · {space.floor}</p>
+              <div className="mt-3 flex flex-wrap items-end gap-x-6 gap-y-3">
+                <p className="font-display leading-none text-ink-900">
+                  <span className="text-step-5 font-semibold">{Math.round(space.glaSqm)}</span>
+                  <span className="ml-1 text-step-1 align-top text-ink-600">m²</span>
+                </p>
                 <StatusBadge status={space.status} />
-                <h1 className="mt-3 text-step-3 font-display font-semibold text-ink-900">
-                  {space.name} <span className="text-ink-600">— {space.buildingReference}</span>
-                </h1>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-ink-600">GLA</p>
-                <p className="font-display text-2xl font-semibold text-ink-900">{formatSqm(space.glaSqm)}</p>
-              </div>
+              <h1 className="mt-4 text-step-3 font-display font-semibold text-ink-900">{space.name}</h1>
             </div>
 
             <p className="mt-6 max-w-2xl text-lg text-ink-700">{space.summary}</p>

@@ -192,7 +192,7 @@ export function SpacesExplorer() {
 
 function SpaceCard({ space }: { space: Space }) {
   return (
-    <Link href={`/spaces/${space.slug}`} onClick={() => track("view_space", { slug: space.slug })} className="group flex flex-col border border-ink-900/12 bg-white">
+    <Link href={`/spaces/${space.slug}`} onClick={() => track("view_space", { slug: space.slug })} className="group flex flex-col border border-ink-900/12 bg-white transition-all duration-300 hover:-translate-y-1.5 hover:border-brass-500/40 hover:shadow-[0_20px_40px_-24px_rgba(15,28,24,0.35)]">
       <MediaFrame media={space.gallery[0]} className="aspect-[4/3]" sizes="(min-width:1280px) 33vw, (min-width:640px) 50vw, 100vw" />
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-center justify-between">

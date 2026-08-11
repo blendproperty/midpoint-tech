@@ -1,6 +1,7 @@
 "use client";
 
 import { site } from "@/content/site";
+import { campusAerialDataUri } from "@/content/campus-aerial";
 
 /**
  * No-key map fallback: a styled static panel plus an external
@@ -29,16 +30,26 @@ export function LocationPanel() {
 
   return (
     <div className="relative aspect-[4/3] overflow-hidden border border-ink-900/10 bg-ink-900 lg:aspect-auto lg:h-full lg:min-h-[420px]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={campusAerialDataUri}
+        alt="Aerial architectural rendering of the Midpoint Tech campus at 300 and 100 Janadel Avenue, Halfway House, Midrand"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
       <div
         aria-hidden
-        className="absolute inset-0 opacity-25"
+        className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/15 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-20 mix-blend-overlay"
         style={{
           backgroundImage:
             "linear-gradient(to right, #EDEFEA 1px, transparent 1px), linear-gradient(to bottom, #EDEFEA 1px, transparent 1px)",
           backgroundSize: "40px 40px",
         }}
       />
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
         <span className="mx-auto block h-3 w-3 rounded-full bg-brass-500" aria-hidden />
         <p className="tick-label mt-3 text-stone-100">{site.address.city}, {site.address.province}</p>
         <p className="mt-1 text-xs text-stone-400">Static preview — interactive map pending API configuration</p>

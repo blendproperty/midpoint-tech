@@ -20,7 +20,7 @@ export default function CommunityPage() {
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Community" }]} />
           <div className="mt-8 max-w-2xl">
             <Eyebrow>Community</Eyebrow>
-            <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">
+            <h1 className="mt-4 text-step-5 font-display font-semibold leading-[0.98] text-ink-900">
               Designed to support connection between ambitious businesses.
             </h1>
             <p className="mt-4 text-lg text-ink-700">
