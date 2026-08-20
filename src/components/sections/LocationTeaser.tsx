@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/content/site";
+import { formatCoord } from "@/lib/utils";
 import { campusAerialDataUri } from "@/content/campus-aerial";
 import { ArrowUpRight } from "lucide-react";
 
@@ -82,12 +83,7 @@ export function LocationTeaser() {
           />
           <div
             aria-hidden
-            className="absolute inset-0 opacity-20 animate-grid-drift mix-blend-overlay"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right, #EDEFEA 1px, transparent 1px), linear-gradient(to bottom, #EDEFEA 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
+            className="schematic-grid absolute inset-0 opacity-20 animate-grid-drift mix-blend-overlay"
           />
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
             <span aria-hidden className="relative mx-auto flex h-3 w-3 items-center justify-center">
@@ -95,6 +91,9 @@ export function LocationTeaser() {
               <span className="relative inline-flex h-3 w-3 rounded-full bg-brass-500" />
             </span>
             <p className="tick-label mt-3 text-stone-100">Halfway House, Midrand</p>
+            <p className="coord-readout mt-1 text-brass-400/70">
+              {formatCoord(site.address.lat, "N", "S")} / {formatCoord(site.address.lng, "E", "W")}
+            </p>
           </div>
         </Reveal>
       </Container>

@@ -9,11 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { site, CTA } from "@/content/site";
 import { campusAerialDataUri } from "@/content/campus-aerial";
 import { campusBuildings } from "@/content/campus-buildings";
-
-function formatCoord(value: number, positiveLabel: string, negativeLabel: string) {
-  const label = value >= 0 ? positiveLabel : negativeLabel;
-  return `${Math.abs(value).toFixed(4)}° ${label}`;
-}
+import { formatCoord } from "@/lib/utils";
 
 export function Hero() {
   const reduce = useReducedMotion();

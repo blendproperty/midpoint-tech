@@ -18,3 +18,8 @@ export function absoluteUrl(path: string): string {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tech.mid-point.co.za";
   return new URL(path, base).toString();
 }
+
+export function formatCoord(value: number, positiveLabel: string, negativeLabel: string): string {
+  const label = value >= 0 ? positiveLabel : negativeLabel;
+  return `${Math.abs(value).toFixed(4)}° ${label}`;
+}

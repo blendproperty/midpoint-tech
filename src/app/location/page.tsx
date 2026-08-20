@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { LocationPanel } from "@/components/sections/LocationPanel";
 import { AddressCopyButton } from "@/components/sections/AddressCopyButton";
 import { site } from "@/content/site";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl, formatCoord } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Location — 300 Janadel Avenue, Midrand",
@@ -39,13 +39,19 @@ export default function LocationPage() {
         <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Location" }]} />
           <div className="mt-8 max-w-2xl">
-            <Eyebrow>Location</Eyebrow>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <Eyebrow>Location</Eyebrow>
+              <p className="coord-readout text-ink-600">
+                {formatCoord(site.address.lat, "N", "S")} / {formatCoord(site.address.lng, "E", "W")}
+              </p>
+            </div>
             <h1 className="mt-4 text-step-4 font-display font-semibold text-ink-900">
               On the corridor between Johannesburg and Pretoria.
             </h1>
             <p className="mt-4 text-lg text-ink-700">
-              300 Janadel Avenue sits in Halfway House, Midrand — a practical base for teams that need to
-              serve both metros. Exact travel times will be confirmed and added ahead of launch.
+              A technology-forward precinct at 300 Janadel Avenue, Halfway House, Midrand — a practical
+              base for teams that need to serve both metros. Exact travel times will be confirmed and
+              added ahead of launch.
             </p>
           </div>
         </Container>
