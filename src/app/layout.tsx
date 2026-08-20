@@ -9,6 +9,8 @@ import "@fontsource/manrope/700.css";
 import "@fontsource/space-grotesk/500.css";
 import "@fontsource/space-grotesk/600.css";
 import "@fontsource/space-grotesk/700.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
 import { SiteNav } from "@/components/sections/SiteNav";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { site } from "@/content/site";

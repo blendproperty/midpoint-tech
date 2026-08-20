@@ -8,6 +8,12 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { site, CTA } from "@/content/site";
 import { campusAerialDataUri } from "@/content/campus-aerial";
+import { campusBuildings } from "@/content/campus-buildings";
+
+function formatCoord(value: number, positiveLabel: string, negativeLabel: string) {
+  const label = value >= 0 ? positiveLabel : negativeLabel;
+  return `${Math.abs(value).toFixed(4)}° ${label}`;
+}
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -64,16 +70,67 @@ export function Hero() {
         />
       </motion.div>
 
+      {/* Schematic overlay: reads the aerial rendering as a deliberate survey
+          plot rather than an unfinished render — crosshairs pinned to each
+          building, corner ticks framing the plot, one shared source with the
+          campus explorer below so the two never disagree. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 hidden sm:block"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 0%, black 32%, transparent 48%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 32%, transparent 48%)",
+        }}
+      >
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full opacity-90">
+          {campusBuildings.map((b) => (
+            <g key={b.id}>
+              <line x1={b.x - 2.2} y1={b.y} x2={b.x + 2.2} y2={b.y} stroke="var(--brass-400)" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+              <line x1={b.x} y1={b.y - 2.2} x2={b.x} y2={b.y + 2.2} stroke="var(--brass-400)" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+              <circle cx={b.x} cy={b.y} r="1" fill="none" stroke="var(--brass-400)" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+            </g>
+          ))}
+          {/* Corner brackets — frame the plot like a survey/viewfinder crop */}
+          {[
+            { x: 3, y: 8, dx: 1, dy: 1 },
+            { x: 97, y: 8, dx: -1, dy: 1 },
+            { x: 3, y: 92, dx: 1, dy: -1 },
+            { x: 97, y: 92, dx: -1, dy: -1 },
+          ].map((c, i) => (
+            <path
+              key={i}
+              d={`M ${c.x} ${c.y + c.dy * 4} L ${c.x} ${c.y} L ${c.x + c.dx * 4} ${c.y}`}
+              fill="none"
+              stroke="var(--brass-400)"
+              strokeWidth="1.5"
+              vectorEffect="non-scaling-stroke"
+              opacity="0.8"
+            />
+          ))}
+        </svg>
+        {campusBuildings.map((b) => (
+          <span
+            key={b.id}
+            className="coord-readout absolute -translate-x-1/2 translate-y-2 text-brass-400"
+            style={{ left: `${b.x}%`, top: `${b.y}%` }}
+          >
+            {b.code}
+          </span>
+        ))}
+      </div>
+
       <motion.div style={{ opacity: contentOpacity }}>
         <Container className="relative flex min-h-[92vh] flex-col justify-end gap-8 pb-20 pt-40 md:min-h-[100vh] md:pb-28">
           <motion.div style={{ y: typeY }} className="flex flex-col gap-6">
-            <motion.p
-              {...rise(0)}
-              className="tick-label flex items-center gap-3 text-brass-400"
-            >
-              <span aria-hidden className="h-px w-8 bg-current" />
-              300 Janadel Avenue · Midrand, Gauteng
-            </motion.p>
+            <motion.div {...rise(0)} className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <p className="tick-label flex items-center gap-3 text-brass-400">
+                <span aria-hidden className="h-px w-8 bg-current" />
+                300 Janadel Avenue · Midrand, Gauteng
+              </p>
+              <p className="coord-readout text-brass-400/60">
+                {formatCoord(site.address.lat, "N", "S")} / {formatCoord(site.address.lng, "E", "W")}
+              </p>
+            </motion.div>
 
             <h1 className="font-display font-semibold leading-[0.94] tracking-tight">
               <motion.span {...rise(0.08)} className="block text-step-6 text-stone-50">
@@ -88,8 +145,9 @@ export function Hero() {
             </h1>
 
             <motion.p {...rise(0.3)} className="max-w-xl text-lg text-stone-300">
-              A technology campus for founders, engineers and teams building what comes next —
-              on the business corridor between Johannesburg and Pretoria.
+              Spaces to lease in a technology-forward precinct — three connected buildings on the
+              business corridor between Johannesburg and Pretoria, built specifically for founders,
+              engineers and teams building what comes next.
             </motion.p>
 
             <motion.div {...rise(0.4)} className="flex flex-wrap items-center gap-4 pt-2">

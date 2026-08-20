@@ -27,11 +27,11 @@ export function Metric({ value, suffix = "", label, isSample = false }: { value:
 
   return (
     <div ref={ref}>
-      <p className="font-display text-step-3 text-ink-900">
+      <p className="mono-figure text-step-3 text-ink-900">
         {displayValue}
         {suffix}
       </p>
-      <p className="mt-1 text-sm text-ink-700">
+      <p className="tick-label mt-1 text-ink-700">
         {label}
         {isSample && <span className="ml-1 text-ink-600/60">(sample)</span>}
       </p>

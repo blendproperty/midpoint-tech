@@ -12,39 +12,7 @@ import { StatusBadge } from "@/components/ui/Badge";
 import { spaces } from "@/content/spaces";
 import { formatSqm } from "@/lib/utils";
 import { campusAerialDataUri } from "@/content/campus-aerial";
-
-/**
- * Hotspot coordinates (percentage of image width/height) are read off the
- * real aerial rendering: the circular atrium at centre, the connected wing
- * to its upper-left, and the further wing to the upper-right. Recalibrate
- * against final published site-plan imagery before launch.
- */
-const buildings = [
-  {
-    id: "block-a",
-    reference: "Block A",
-    label: "Block A",
-    description: "The building's western wing, with a mix of fitted suites and dual-aspect glazing.",
-    x: 51,
-    y: 24,
-  },
-  {
-    id: "block-b",
-    reference: "Block B",
-    label: "Block B",
-    description: "The eastern wing — full-floor and shell-and-core space for larger teams.",
-    x: 74,
-    y: 26,
-  },
-  {
-    id: "block-c",
-    reference: "Block C",
-    label: "The Atrium",
-    description: "The circular atrium building at the heart of the campus — flexible and desk-based space.",
-    x: 47,
-    y: 49,
-  },
-] as const;
+import { campusBuildings as buildings } from "@/content/campus-buildings";
 
 export function CampusExplorer() {
   const [activeId, setActiveId] = useState<string>(buildings[0].id);
@@ -93,6 +61,26 @@ export function CampusExplorer() {
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div aria-hidden className="absolute inset-0 bg-ink-950/10" />
+            <div aria-hidden className="schematic-grid absolute inset-0 opacity-[0.35] mix-blend-overlay" />
+
+            {/* Connective survey lines between the three markers — the campus
+                read as one instrumented node network, not three separate dots. */}
+            <svg
+              aria-hidden
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+            >
+              <polyline
+                points={buildings.map((b) => `${b.x},${b.y}`).join(" ")}
+                fill="none"
+                stroke="var(--brass-400)"
+                strokeWidth="0.15"
+                strokeDasharray="0.6 0.6"
+                opacity="0.55"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
 
             {buildings.map((b) => {
               const isActive = b.id === activeId;
@@ -111,12 +99,13 @@ export function CampusExplorer() {
                     animate={reduce ? undefined : { scale: isActive ? [1, 1.15, 1] : 1 }}
                     transition={{ duration: 1.8, repeat: isActive ? Infinity : 0, ease: "easeInOut" }}
                     className={
-                      "relative flex h-4 w-4 items-center justify-center rounded-full border-2 transition-colors " +
+                      "mono-figure relative flex h-5 w-5 items-center justify-center rounded-full border-2 text-[9px] transition-colors " +
                       (isActive
-                        ? "border-brass-500 bg-brass-500"
-                        : "border-stone-100 bg-ink-950/70 hover:bg-brass-500/80")
+                        ? "border-brass-500 bg-brass-500 text-ink-950"
+                        : "border-stone-100 bg-ink-950/70 text-stone-100 hover:bg-brass-500/80")
                     }
                   >
+                    {b.code}
                     {isActive && (
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brass-500/60" />
                     )}
@@ -145,12 +134,13 @@ export function CampusExplorer() {
                   onClick={() => setActiveId(b.id)}
                   aria-pressed={b.id === activeId}
                   className={
-                    "tick-label border px-3 py-2 transition-colors " +
+                    "tick-label flex items-center gap-2 border px-3 py-2 transition-colors " +
                     (b.id === activeId
                       ? "border-ink-900 bg-ink-900 text-stone-50"
                       : "border-ink-900/20 text-ink-700 hover:border-ink-900/50")
                   }
                 >
+                  <span className="mono-figure text-[10px] opacity-60">{b.code}</span>
                   {b.label}
                 </button>
               ))}
@@ -169,14 +159,14 @@ export function CampusExplorer() {
               <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-ink-900/10 py-5 text-sm">
                 <div>
                   <dt className="text-ink-600">Listed GLA</dt>
-                  <dd className="mt-1 font-display text-xl font-semibold text-ink-900">
+                  <dd className="mono-figure mt-1 text-xl font-medium text-ink-900">
                     {activeSummary && activeSummary.gla > 0 ? formatSqm(activeSummary.gla) : "—"}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-ink-600">Available now</dt>
-                  <dd className="mt-1 font-display text-xl font-semibold text-ink-900">
-                    {activeSummary ? activeSummary.available : 0} of {activeSummary?.count ?? 0}
+                  <dd className="mono-figure mt-1 text-xl font-medium text-ink-900">
+                    {activeSummary ? activeSummary.available : 0} / {activeSummary?.count ?? 0}
                   </dd>
                 </div>
               </dl>

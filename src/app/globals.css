@@ -71,6 +71,11 @@
      request to Google Fonts required. */
   --font-manrope: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-space-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  /* Third type role: instrument/data face for coordinates, stat figures,
+     status readouts — everything that behaves like a measurement rather
+     than prose. Reinforces the surveyor's-datum concept in the numbers
+     themselves, not just the hairlines. */
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
 @theme inline {
@@ -100,6 +105,7 @@
   --text-step-6: var(--step-6);
   --font-display: var(--font-space-grotesk);
   --font-body: var(--font-manrope);
+  --font-mono: var(--font-mono);
 }
 
 * {
@@ -175,6 +181,71 @@ h1, h2, h3, h4, .font-display {
   font-size: var(--step--1);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* Instrument-panel numerals: stat figures, coordinates, sizes, statuses.
+   Tabular figures so columns of numbers line up like a real readout. */
+.mono-figure {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.coord-readout {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--step--1);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status readout: a bracketed instrument label rather than a soft pill —
+   [ AVAILABLE ] instead of a rounded badge, to match the survey/mono voice. */
+.status-readout {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--step--1);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.status-readout .bracket {
+  opacity: 0.45;
+}
+
+/* Fine schematic grid used over the campus renderings — a deliberate
+   surveyor's-overlay, not decoration. Kept faint; the tick marks and
+   crosshairs carry the "technical" read, the grid just grounds them. */
+.schematic-grid {
+  background-image:
+    linear-gradient(to right, var(--line-on-ink) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line-on-ink) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+/* Instrument ledger frame. Note: Tailwind's border-color / divide-color
+   utilities are emitted inside @layer utilities, and this file's `*
+   { border-color: ... }` reset above is unlayered — unlayered CSS always
+   wins over layered CSS regardless of specificity, so a plain
+   `border-stone-100/25` utility can never override that reset. Styled
+   directly here instead of fighting the cascade for one component. */
+.instrument-ledger {
+  border: 1px solid var(--line-on-ink);
+}
+.instrument-ledger > * {
+  border-color: var(--line-on-ink);
+}
+.instrument-ledger > * + * {
+  border-top: 1px solid var(--line-on-ink);
+}
+@media (min-width: 640px) {
+  .instrument-ledger > * + * {
+    border-top: none;
+    border-left: 1px solid var(--line-on-ink);
+  }
+}
+
+.schematic-grid[data-on="stone"] {
+  background-image:
+    linear-gradient(to right, var(--line-on-stone) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line-on-stone) 1px, transparent 1px);
 }
 
 /* ============================================================

@@ -10,6 +10,7 @@ export function SiteFooter() {
           <p className="font-display text-lg font-semibold text-stone-100">
             Midpoint <span className="text-brass-400">Tech</span>
           </p>
+          <p className="tick-label mt-2 text-stone-400">Technology precinct · Midrand</p>
           <address className="mt-4 not-italic text-sm leading-relaxed">
             {site.address.line1}
             <br />
@@ -19,6 +20,9 @@ export function SiteFooter() {
             <br />
             {site.address.postalCode}, {site.address.country}
           </address>
+          <p className="coord-readout mt-3 text-stone-400/60">
+            {Math.abs(site.address.lat).toFixed(4)}° S, {Math.abs(site.address.lng).toFixed(4)}° E
+          </p>
           <p className="mt-6 text-sm">
             Part of{" "}
             <a href={site.parentBrandUrl} className="text-teal-400 hover:text-brass-400 underline underline-offset-4">

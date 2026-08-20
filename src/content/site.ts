@@ -8,9 +8,9 @@ export const site = {
   parentBrand: "Midpoint",
   parentBrandUrl: "https://www.mid-point.co.za/",
   domain: "tech.mid-point.co.za",
-  tagline: "Space for technology businesses building what comes next.",
+  tagline: "Spaces to lease in a technology-forward precinct.",
   description:
-    "Midpoint Tech is a connected business environment for startups, scale-ups and established technology teams at 300 Janadel Avenue, Midrand.",
+    "Midpoint Tech is a technology-forward precinct — connected office space for startups, scale-ups and established technology teams at 300 Janadel Avenue, Midrand.",
   address: {
     line1: "300 Janadel Avenue",
     line2: "Halfway House",

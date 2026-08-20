@@ -202,7 +202,7 @@ function SpaceCard({ space }: { space: Space }) {
         <h3 className="font-display text-lg font-semibold text-ink-900 group-hover:text-teal-600">{space.name}</h3>
         <p className="text-sm text-ink-700">{typeLabels[space.type]}</p>
         <dl className="mt-auto flex items-center justify-between border-t border-ink-900/10 pt-4 text-sm">
-          <div><dt className="text-ink-600">Size</dt><dd className="font-medium text-ink-900">{formatSqm(space.glaSqm)}</dd></div>
+          <div><dt className="text-ink-600">Size</dt><dd className="mono-figure font-medium text-ink-900">{formatSqm(space.glaSqm)}</dd></div>
           <div className="text-right"><dt className="text-ink-600">Rental</dt><dd className="font-medium text-ink-900">On request</dd></div>
         </dl>
       </div>
@@ -219,7 +219,10 @@ function SpaceRow({ space }: { space: Space }) {
           <h3 className="font-display text-lg font-semibold text-ink-900 group-hover:text-teal-600">{space.name}</h3>
           <StatusBadge status={space.status} />
         </div>
-        <p className="mt-1 text-sm text-ink-700">{space.buildingReference} · {typeLabels[space.type]} · {formatSqm(space.glaSqm)}</p>
+        <p className="mt-1 text-sm text-ink-700">
+          {space.buildingReference} · {typeLabels[space.type]} ·{" "}
+          <span className="mono-figure">{formatSqm(space.glaSqm)}</span>
+        </p>
       </div>
     </Link>
   );
