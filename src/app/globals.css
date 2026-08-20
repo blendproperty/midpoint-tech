@@ -108,8 +108,14 @@
   --font-mono: var(--font-mono);
 }
 
-* {
-  border-color: var(--line-on-stone);
+/* Layered (not a bare top-level rule) so Tailwind's border- and divide-
+   color utilities — emitted in @layer utilities — can actually override
+   this default the way they're meant to. An unlayered `* { ... }` rule
+   here would beat every layered utility regardless of specificity. */
+@layer base {
+  * {
+    border-color: var(--line-on-stone);
+  }
 }
 
 html {
@@ -220,12 +226,7 @@ h1, h2, h3, h4, .font-display {
     linear-gradient(to bottom, var(--line-on-ink) 1px, transparent 1px);
   background-size: 40px 40px;
 }
-/* Instrument ledger frame. Note: Tailwind's border-color / divide-color
-   utilities are emitted inside @layer utilities, and this file's `*
-   { border-color: ... }` reset above is unlayered — unlayered CSS always
-   wins over layered CSS regardless of specificity, so a plain
-   `border-stone-100/25` utility can never override that reset. Styled
-   directly here instead of fighting the cascade for one component. */
+/* Instrument ledger frame. */
 .instrument-ledger {
   border: 1px solid var(--line-on-ink);
 }
