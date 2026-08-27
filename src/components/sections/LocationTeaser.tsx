@@ -25,23 +25,26 @@ export function LocationTeaser() {
             metros without committing to either.
           </p>
 
-          {/* Corridor device — the geography as the interface, not a generic map embed */}
-          <ol className="mt-8 flex items-center gap-0 text-sm">
+          {/* Corridor device — the geography as the interface, not a generic map embed.
+              "Midpoint Tech" reads as a bracketed instrument readout, matching
+              StatusBadge, rather than a translucent pill (which read as a
+              mismatched box against the ink background). */}
+          <ol className="mt-8 flex flex-wrap items-center gap-y-3 text-sm">
             {corridor.map((place, i) => (
               <li key={place} className="flex items-center">
                 {i > 0 && <span aria-hidden className="mx-3 h-px w-8 bg-stone-100/25 md:w-14" />}
-                <span
-                  className={
-                    place === "Midpoint Tech"
-                      ? "tick-label flex items-center gap-2 border border-brass-500/50 bg-brass-500/10 px-3 py-1.5 text-brass-300"
-                      : "tick-label text-stone-400"
-                  }
-                >
-                  {place === "Midpoint Tech" && (
-                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brass-400" />
-                  )}
-                  {place}
-                </span>
+                {place === "Midpoint Tech" ? (
+                  <span className="status-readout inline-flex items-center text-brass-400">
+                    <span aria-hidden className="bracket">[</span>
+                    <span className="mx-1 inline-flex items-center gap-1.5">
+                      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-current" />
+                      {place}
+                    </span>
+                    <span aria-hidden className="bracket">]</span>
+                  </span>
+                ) : (
+                  <span className="tick-label text-stone-400">{place}</span>
+                )}
               </li>
             ))}
           </ol>
