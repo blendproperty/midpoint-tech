@@ -17,6 +17,6 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - name: Build actual production image
-        run: docker build -t node-patch:ci .
+        run: docker build --build-arg NEXT_PUBLIC_SITE_URL=https://midpoint-tech.onpointoffices.co.za -t node-patch:ci .
       - name: Verify production image Node version
         run: test "$(docker run --rm --entrypoint node node-patch:ci --version)" = "v22.23.4"
